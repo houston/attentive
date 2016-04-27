@@ -8,7 +8,7 @@ module Attentive
     def initialize(text, params={})
       @text = text
       @contexts = Set.new(params.fetch(:contexts, []))
-      contexts << :conversation if tokens.include?(Attentive::Tokens::Me.new)
+      contexts << :conversation if tokens.grep(Attentive::Tokens::Invocation).any?
     end
 
     def tokens

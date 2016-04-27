@@ -13,8 +13,8 @@ module Attentive
       Attentive::Entity[entity_name.to_sym].new(variable_name)
     end
 
-    def me(pos: nil)
-      Attentive::Tokens::Me.new pos
+    def invocation(string, pos: nil)
+      Attentive::Tokens::Invocation.new string, pos
     end
 
     def punctuation(string, pos: nil)
@@ -38,7 +38,7 @@ end
 
 require "attentive/tokens/any_of"
 require "attentive/tokens/emoji"
-require "attentive/tokens/me"
+require "attentive/tokens/invocation"
 require "attentive/tokens/punctuation"
 require "attentive/tokens/regexp"
 require "attentive/tokens/whitespace"

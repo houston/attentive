@@ -5,7 +5,7 @@ module Attentive
   extend Attentive::Config
 
   # Default configuration
-  self.me = "@me".freeze
+  self.invocations = ["@me".freeze]
 
 
   # Attentive DSL

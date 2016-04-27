@@ -162,20 +162,20 @@ class TokenizerTest < Minitest::Test
         word("hello"),
         punctuation(","),
         whitespace(" "),
-        me
+        invocation("@me")
       ]
     end
 
     context "whatever Attentive.me may be defined as, it" do
-      setup { Attentive.me = "@example" }
-      teardown { Attentive.me = "@me" }
+      setup { Attentive.invocations = ["@example", "@me"] }
+      teardown { Attentive.invocations = ["@me"] }
 
       should "identify the special @me mention" do
         assert_tokens "hello, @example", [
           word("hello"),
           punctuation(","),
           whitespace(" "),
-          me
+          invocation("@example")
         ]
       end
     end

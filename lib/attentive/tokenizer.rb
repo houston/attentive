@@ -111,8 +111,8 @@ module Attentive
         when PUNCTUATION
           tokens << punctuation(string, pos: pos)
 
-        when Attentive.me
-          tokens << me(pos: pos)
+        when *Attentive.invocations
+          tokens << invocation(string, pos: pos)
 
         else
           if replace_with = Attentive::ABBREVIATIONS[string]
