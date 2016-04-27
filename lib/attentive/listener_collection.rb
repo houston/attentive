@@ -29,7 +29,11 @@ module Attentive
         listeners.each do |listener|
           listener.phrases.each do |phrase|
             match = Attentive::Matcher.new(phrase, Cursor.new(message.tokens, i), listener: listener, message: message).match!
-            matches.push match if match
+            next unless match
+
+            # Don't match more than one phrase per listener
+            matches.push match
+            break
           end
         end
       end

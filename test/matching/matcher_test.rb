@@ -50,4 +50,17 @@ class MatcherTest < Minitest::Test
     end
   end
 
+  context "When listening for two phrases that could match, it" do
+    setup do
+      listen_for %q{deploy (?<pull-request-number>\d+)},
+                 %q{deploy (?<branch>[\w\d\+\-\._\/]+)}
+    end
+
+    should "return the first match" do
+      hear "deploy 49"
+      assert_matched
+      assert match.matched? "pull-request-number"
+    end
+  end
+
 end
