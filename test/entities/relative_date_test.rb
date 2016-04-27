@@ -62,6 +62,13 @@ class RelativeDateTest < Minitest::Test
       assert_matched
       assert_equal Date.new(2016, 4, 22), match["date"]
     end
+
+    should "match in the middle of a phrase" do
+      listen_for "is {{date:relative-date}} a casual day"
+      hear "is next thursday a casual day"
+      assert_matched
+      assert_equal Date.new(2016, 5, 5), match["date"]
+    end
   end
 
 end
