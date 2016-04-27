@@ -1,7 +1,10 @@
+require "attentive/abbreviations"
+require "attentive/contractions"
 require "attentive/text"
 require "attentive/tokens"
 require "attentive/phrase"
 require "attentive/errors"
+
 
 module Attentive
   class Tokenizer
@@ -112,10 +115,10 @@ module Attentive
           tokens << me(pos: pos)
 
         else
-          if replace_with = Attentive::Text::SLANG[string]
+          if replace_with = Attentive::ABBREVIATIONS[string]
             tokens.concat tokenize(replace_with, options)
 
-          elsif expands_to = Attentive::Text::CONTRACTIONS[string]
+          elsif expands_to = Attentive::CONTRACTIONS[string]
             possibilities = expands_to.map do |possibility|
               tokenize(possibility, options)
             end

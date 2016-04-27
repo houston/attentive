@@ -34,7 +34,9 @@ class TokenizerTest < Minitest::Test
         word("world"),
         punctuation(":"),
         whitespace(" "),
-        word("i'm"),
+        word("i"),
+        whitespace(" "),
+        word("am"),
         whitespace(" "),
         word("here"),
         punctuation("...")
