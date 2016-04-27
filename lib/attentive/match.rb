@@ -10,11 +10,11 @@ module Attentive
     end
 
     def matched?(variable_name)
-      @match_data.key?(variable_name)
+      @match_data.key? variable_name.to_s
     end
 
     def [](variable_name)
-      @match_data.fetch(variable_name)
+      @match_data.fetch variable_name.to_s
     end
 
     def to_s
