@@ -37,7 +37,7 @@ module Attentive
 
 
     def initialize(variable_name, pos=0)
-      @variable_name = variable_name.to_sym
+      @variable_name = variable_name.to_s
       super pos
     end
 

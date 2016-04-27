@@ -18,49 +18,49 @@ class RelativeDateTest < Minitest::Test
       listen_for "what is showing on {{date:relative-date}}"
       hear "what is showing on tuesday"
       assert_matched
-      assert_equal Date.new(2016, 4, 26), match[:date]
+      assert_equal Date.new(2016, 4, 26), match["date"]
     end
 
     should "match abbreviated weekdays" do
       listen_for "what is showing on {{date:relative-date}}"
       hear "what is showing on tues"
       assert_matched
-      assert_equal Date.new(2016, 4, 26), match[:date]
+      assert_equal Date.new(2016, 4, 26), match["date"]
     end
 
     should "match today" do
       listen_for "what is showing {{date:relative-date}}"
       hear "what is showing today"
       assert_matched
-      assert_equal Date.new(2016, 4, 25), match[:date]
+      assert_equal Date.new(2016, 4, 25), match["date"]
     end
 
     should "match yesterday" do
       listen_for "what is showing {{date:relative-date}}"
       hear "what is showing yesterday"
       assert_matched
-      assert_equal Date.new(2016, 4, 24), match[:date]
+      assert_equal Date.new(2016, 4, 24), match["date"]
     end
 
     should "match tomorrow" do
       listen_for "what is showing {{date:relative-date}}"
       hear "what is showing tomorrow"
       assert_matched
-      assert_equal Date.new(2016, 4, 26), match[:date]
+      assert_equal Date.new(2016, 4, 26), match["date"]
     end
 
     should "match weekdays in next week" do
       listen_for "what is showing on {{date:relative-date}}"
       hear "what is showing on next friday"
       assert_matched
-      assert_equal Date.new(2016, 5, 6), match[:date]
+      assert_equal Date.new(2016, 5, 6), match["date"]
     end
 
     should "match weekdays in last week" do
       listen_for "what was showing on {{date:relative-date}}"
       hear "what was showing on last friday"
       assert_matched
-      assert_equal Date.new(2016, 4, 22), match[:date]
+      assert_equal Date.new(2016, 4, 22), match["date"]
     end
   end
 

@@ -2,7 +2,7 @@ module Attentive
   class Token
     attr_reader :pos
 
-    def initialize(pos)
+    def initialize(pos=nil)
       @pos = pos
     end
 
@@ -37,7 +37,7 @@ module Attentive
   class StringToken < Token
     attr_reader :string
 
-    def initialize(string, pos)
+    def initialize(string, pos=nil)
       @string = string
       super pos
     end

@@ -1,3 +1,4 @@
+require "attentive"
 require "thread_safe"
 require "delegate"
 require "attentive/cursor"
@@ -12,18 +13,12 @@ module Attentive
     end
 
     def listen_for(*args, &block)
-      Listener.new(self, args, block).tap do |listener|
+      options = args.last.is_a?(::Hash) ? args.pop : {}
+
+      Attentive::Listener.new(self, args, options, block).tap do |listener|
         push listener
       end
     end
-
-    def overhear(*args, &block)
-      Listener.new(self, args, block).tap do |listener|
-        push listener
-      end
-    end
-
-
 
     def hear(message)
       listeners = select { |listener| listener.matches_context?(message) }
@@ -33,7 +28,7 @@ module Attentive
       message.tokens.each_with_index do |token, i|
         listeners.each do |listener|
           listener.phrases.each do |phrase|
-            match = Attentive::Matcher.new(phrase, Cursor.new(message.tokens, i)).match!
+            match = Attentive::Matcher.new(phrase, Cursor.new(message.tokens, i), listener: listener, message: message).match!
             matches.push match if match
           end
         end

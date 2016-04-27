@@ -27,7 +27,7 @@ Attentive::Entity.define :"relative-date",
     when /^thu/ then next_wday[4]
     when /^fri/ then next_wday[5]
     when /^sat/ then next_wday[6]
-    else raise NotImplementedError, "Unrecognize weekday: #{weekday.inspect}"
+    else raise NotImplementedError, "Unrecognized weekday: #{weekday.inspect}"
     end
 
     date += 7 if match.to_s.start_with?("next")
@@ -38,7 +38,7 @@ Attentive::Entity.define :"relative-date",
     when "today" then today
     when "tomorrow" then today + 1
     when "yesterday" then today - 1
-    else raise NotImplementedError, "Unrecognize match: #{match.inspect}"
+    else raise NotImplementedError, "Unrecognized match: #{match.to_s}"
     end
   end
 end

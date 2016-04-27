@@ -14,7 +14,6 @@ module Attentive
     SPLITTER = /(\n|{{|}}|\s+|\.{2,}|[^\s\w'@-])/.freeze
     PUNCTUATION = /^\W+$/.freeze
     WHITESPACE = /^\s+$/.freeze
-    ME = "@me".freeze
     ENTITY_START = "{{".freeze
     ENTITY_END = "}}".freeze
     REGEXP_START = "(".freeze
@@ -109,7 +108,7 @@ module Attentive
         when PUNCTUATION
           tokens << punctuation(string, pos: pos)
 
-        when ME
+        when Attentive.me
           tokens << me(pos: pos)
 
         else

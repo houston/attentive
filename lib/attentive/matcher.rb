@@ -8,6 +8,7 @@ module Attentive
       @phrase = phrase
       @cursor = cursor
       @pos = params.fetch(:pos, 0)
+      @match_params = params.each_with_object({}) { |(key, value), new_hash| new_hash[key] = value if %i{listener message}.member?(key) }
       @pos += 1 while phrase[pos] && phrase[pos].whitespace?
       @match_data = {}
       @state = :matching
@@ -46,8 +47,10 @@ module Attentive
           end
           @pos += 1 while phrase[pos] && phrase[pos].whitespace?
           @state = :found
-          # puts "matched #{phrase.inspect}"
-          return Attentive::Match.new(phrase, match_data: @match_data) if pos == phrase.length
+
+
+          # -> This is the one spot where we instantiate a Match
+          return Attentive::Match.new(phrase, @match_params.merge(match_data: @match_data)) if pos == phrase.length
 
         elsif !token.skippable?
           @state = :mismatch

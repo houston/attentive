@@ -10,8 +10,8 @@ class IntegerTest < Minitest::Test
       listen_for "what is {{x:integer}} + {{y:integer}}?"
       hear "what is 4 + 5?"
       assert_matched
-      assert_equal 4, match[:x]
-      assert_equal 5, match[:y]
+      assert_equal 4, match["x"]
+      assert_equal 5, match["y"]
     end
   end
 

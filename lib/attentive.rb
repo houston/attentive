@@ -1,8 +1,14 @@
 require "attentive/version"
-require "attentive/listener_collection"
-require "attentive/message"
+require "attentive/config"
 
 module Attentive
+  extend Attentive::Config
+
+  # Default configuration
+  self.me = "@me".freeze
+
+
+  # Attentive DSL
 
   def listeners
     @listeners ||= Attentive::ListenerCollection.new
@@ -18,3 +24,6 @@ module Attentive
   end
 
 end
+
+require "attentive/listener_collection"
+require "attentive/message"

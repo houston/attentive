@@ -6,10 +6,7 @@ module Attentive
   class Listener
     attr_reader :phrases
 
-    def initialize(listeners, args, callback)
-      options = args.last.is_a?(::Hash) ? args.pop : {}
-
-      # Ugh!
+    def initialize(listeners, phrases, options, callback)
       context_options = options.fetch(:context, {})
       @required_contexts = context_options.fetch(:in, %i{conversation})
       @required_contexts = [] if @required_contexts == :any
@@ -18,8 +15,8 @@ module Attentive
       @prohibited_contexts = Set[*@prohibited_contexts]
 
       @listeners = listeners
+      @phrases = tokenize_phrases!(phrases)
       @callback = callback
-      @phrases = tokenize_phrases!(args)
     end
 
     def matches_context?(message)
@@ -47,7 +44,6 @@ module Attentive
     end
 
     def tokenize_phrase!(phrase)
-      # should this be {regexps: false}?
       Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true, ambiguous: false)
     end
 

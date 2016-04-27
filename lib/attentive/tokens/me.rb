@@ -5,7 +5,7 @@ module Attentive
     class Me < Token
 
       def to_s
-        Attentive::Tokenizer::ME
+        Attentive.me
       end
 
       def skippable?
