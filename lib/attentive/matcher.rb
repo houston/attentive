@@ -2,11 +2,11 @@ require "attentive/match"
 
 module Attentive
   class Matcher
-    attr_reader :phrase, :cursor, :pos
+    attr_reader :phrase, :message, :pos
 
-    def initialize(phrase, cursor, params={})
+    def initialize(phrase, message, params={})
       @phrase = phrase
-      @cursor = cursor
+      @message = message
       @pos = params.fetch(:pos, 0)
       @match_params = params.each_with_object({}) { |(key, value), new_hash| new_hash[key] = value if %i{listener message}.member?(key) }
       @pos += 1 while phrase[pos] && phrase[pos].whitespace?
@@ -23,7 +23,7 @@ module Attentive
     end
 
     def match!
-      until (token = cursor.peek).eof?
+      until (token = message.peek).eof?
         if token.ambiguous?
           unless match_any!(token.possibilities)
             @state = :mismatch
@@ -31,7 +31,7 @@ module Attentive
           end
           @pos += 1 while phrase[pos] && phrase[pos].whitespace?
 
-        elsif match_data = phrase[pos].matches?(cursor)
+        elsif match_data = phrase[pos].matches?(message)
           @match_data.merge!(match_data) unless match_data == true
           @pos += 1
           @pos += 1 while phrase[pos] && phrase[pos].whitespace?
@@ -45,8 +45,8 @@ module Attentive
           break
         end
 
-        cursor.pop
-        cursor.pop while cursor.peek.whitespace?
+        message.pop
+        message.pop while message.peek.whitespace?
       end
 
       nil
