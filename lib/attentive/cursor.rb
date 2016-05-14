@@ -24,6 +24,10 @@ module Attentive
       peek.pos
     end
 
+    def eof?
+      @pos == @tokens.length
+    end
+
 
 
   private

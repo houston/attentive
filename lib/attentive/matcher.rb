@@ -2,16 +2,21 @@ require "attentive/match"
 
 module Attentive
   class Matcher
-    attr_reader :phrase, :message, :pos
+    attr_reader :phrase, :message, :cursor
 
     def initialize(phrase, message, params={})
       @phrase = phrase
+      @cursor = Cursor.new(phrase, params.fetch(:pos, 0))
       @message = message
-      @pos = params.fetch(:pos, 0)
       @match_params = params.each_with_object({}) { |(key, value), new_hash| new_hash[key] = value if %i{listener message}.member?(key) }
-      @pos += 1 while phrase[pos] && phrase[pos].whitespace?
       @match_data = {}
       @state = :matching
+
+      cursor.pop while cursor.peek.whitespace?
+    end
+
+    def pos
+      cursor.pos
     end
 
     def matching?
@@ -29,16 +34,16 @@ module Attentive
             @state = :mismatch
             break
           end
-          @pos += 1 while phrase[pos] && phrase[pos].whitespace?
+          cursor.pop while cursor.peek.whitespace?
 
-        elsif match_data = phrase[pos].matches?(message)
+        elsif match_data = cursor.peek.matches?(message)
           @match_data.merge!(match_data) unless match_data == true
-          @pos += 1
-          @pos += 1 while phrase[pos] && phrase[pos].whitespace?
+          cursor.pop
+          cursor.pop while cursor.peek.whitespace?
           @state = :found
 
           # -> This is the one spot where we instantiate a Match
-          return Attentive::Match.new(phrase, @match_params.merge(match_data: @match_data)) if pos == phrase.length
+          return Attentive::Match.new(phrase, @match_params.merge(match_data: @match_data)) if cursor.eof?
 
         elsif !token.skippable?
           @state = :mismatch
@@ -57,7 +62,7 @@ module Attentive
         matcher = Matcher.new(phrase, Cursor.new(message), pos: pos)
         matcher.match!
         unless matcher.mismatch?
-          @pos = matcher.pos
+          cursor.instance_variable_set :@pos, matcher.pos
           return true
         end
       end
