@@ -23,7 +23,7 @@ module Attentive
     end
 
     def match!
-      while token = cursor.peek
+      until (token = cursor.peek).eof?
         if token.ambiguous?
           unless match_subphrase!(token.possibilities)
             @state = :mismatch
@@ -58,11 +58,7 @@ module Attentive
         end
 
         cursor.pop
-        break unless cursor.peek
-        while cursor.peek.whitespace?
-          cursor.pop
-          break unless cursor.peek
-        end
+        cursor.pop while cursor.peek.whitespace?
       end
 
       nil

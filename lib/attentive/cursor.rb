@@ -8,7 +8,7 @@ module Attentive
     end
 
     def peek
-      tokens[pos]
+      tokens[pos] || EOF
     end
 
     def pop
@@ -23,6 +23,21 @@ module Attentive
     def offset
       peek.pos
     end
+
+
+
+  private
+
+    class Eof
+      def whitespace?
+        false
+      end
+
+      def eof?
+        true
+      end
+    end
+    EOF = Eof.new.freeze
 
   end
 end

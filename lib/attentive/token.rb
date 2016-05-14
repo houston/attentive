@@ -26,6 +26,10 @@ module Attentive
       false
     end
 
+    def eof?
+      false
+    end
+
     def matches?(cursor)
       self == cursor.peek
     end
