@@ -1,5 +1,5 @@
 require "attentive"
-require "thread_safe"
+require "thread_safe" unless RUBY_ENGINE == "opal"
 require "delegate"
 require "attentive/cursor"
 require "attentive/listener"
@@ -9,7 +9,7 @@ module Attentive
   class ListenerCollection < SimpleDelegator
 
     def initialize
-      super ThreadSafe::Array.new
+      super RUBY_ENGINE == "opal" ? [] : ThreadSafe::Array.new
     end
 
     def listen_for(*args, &block)

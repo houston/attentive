@@ -1,5 +1,6 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
+require "opal"
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
@@ -62,6 +63,12 @@ end
       RUBY
     end
 
+  end
+
+  desc "Compile attentive.js"
+  task :js do
+    Opal.append_path "lib"
+    File.binwrite "attentive.js", Opal::Builder.build("attentive").to_s
   end
 
 end

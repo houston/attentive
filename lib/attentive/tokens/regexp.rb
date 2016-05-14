@@ -6,7 +6,7 @@ module Attentive
       attr_reader :regexp
 
       def initialize(string, pos)
-        @regexp = ::Regexp.compile("^#{string}")
+        @regexp = ::Regexp.new("^#{string}")
         super pos
       end
 
