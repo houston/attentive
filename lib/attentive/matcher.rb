@@ -25,7 +25,7 @@ module Attentive
     def match!
       until (token = cursor.peek).eof?
         if token.ambiguous?
-          unless match_subphrase!(token.possibilities)
+          unless match_any!(token.possibilities)
             @state = :mismatch
             break
           end
@@ -52,9 +52,9 @@ module Attentive
       nil
     end
 
-    def match_subphrase!(subphrases)
-      subphrases.each do |subphrase|
-        matcher = Matcher.new(phrase, Cursor.new(subphrase), pos: pos)
+    def match_any!(messages)
+      messages.each do |message|
+        matcher = Matcher.new(phrase, Cursor.new(message), pos: pos)
         matcher.match!
         unless matcher.mismatch?
           @pos = matcher.pos
