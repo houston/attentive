@@ -59,10 +59,10 @@ module Attentive
 
     def match_any!(messages)
       messages.each do |message|
-        matcher = Matcher.new(phrase, Cursor.new(message), pos: pos)
+        matcher = Matcher.new(phrase[pos..-1], Cursor.new(message))
         matcher.match!
         unless matcher.mismatch?
-          cursor.instance_variable_set :@pos, matcher.pos
+          cursor.advance matcher.pos
           return true
         end
       end

@@ -55,10 +55,10 @@ module Attentive
 
     def matches?(cursor)
       self.class.phrases.each do |phrase|
-        cursor_copy = cursor.dup
+        cursor_copy = cursor.new_from_here
         match = Attentive::Matcher.new(phrase, cursor_copy).match!
         if match
-          cursor.instance_variable_set :@pos, cursor_copy.pos
+          cursor.advance cursor_copy.pos
           return { variable_name => _value_from_match(match) }
         end
       end

@@ -22,7 +22,7 @@ module Attentive
         new_character_index = cursor.offset + match_data.to_s.length
         cursor_pos = cursor.tokens.index { |token| token.pos >= new_character_index }
         cursor_pos = cursor.tokens.length unless cursor_pos
-        cursor.instance_variable_set :@pos, cursor_pos
+        cursor.advance cursor_pos - cursor.pos
 
         Hash[match_data.names.zip(match_data.captures)]
       end

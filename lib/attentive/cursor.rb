@@ -12,8 +12,13 @@ module Attentive
     end
 
     def pop
-      @pos += 1
-      tokens[pos - 1]
+      peek.tap do
+        advance
+      end
+    end
+
+    def new_from_here
+      self.class.new(tokens[pos..-1])
     end
 
     def to_s
@@ -22,6 +27,10 @@ module Attentive
 
     def offset
       peek.pos
+    end
+
+    def advance(n=1)
+      @pos += n
     end
 
     def eof?
