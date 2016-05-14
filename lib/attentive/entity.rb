@@ -12,24 +12,43 @@ module Attentive
       attr_accessor :token_name
 
       def [](entity_name)
+        entity_name = entity_name.to_sym
         @entities.fetch(entity_name)
       rescue KeyError
         raise Attentive::UndefinedEntityError.new("Undefined Entity #{entity_name.inspect}")
       end
 
       def define(entity_name, *phrases, &block)
-        entity_klass = Class.new(Attentive::Entity)
-        entity_klass.token_name = entity_name
-        entity_klass.phrases = phrases.map do |phrase|
-          Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true, ambiguous: false)
+        create! entity_name do |entity_klass|
+          entity_klass.phrases = phrases.map do |phrase|
+            Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true, ambiguous: false)
+          end
+          entity_klass.send :define_method, :_value_from_match, &block
         end
-        entity_klass.send :define_method, :_value_from_match, &block
-        register! entity_name, entity_klass
+      end
+
+      def undefine(entity_name)
+        entity_symbol = entity_name.to_sym
+        unregister! entity_symbol
+      end
+
+    protected
+
+      def create!(entity_name)
+        entity_symbol = entity_name.to_sym
+        entity_klass = Class.new(self)
+        entity_klass.token_name = entity_symbol
+        yield entity_klass
+        Entity.register! entity_symbol, entity_klass
       end
 
       def register!(entity_name, entity_klass)
-        # TODO: raise already registered error
+        raise ArgumentError, "Entity #{entity_name.inspect} has already been defined" if @entities.key?(entity_name)
         @entities[entity_name] = entity_klass
+      end
+
+      def unregister!(entity_name)
+        @entities.delete entity_name
       end
     end
 

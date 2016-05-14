@@ -9,10 +9,9 @@ module Attentive
       attr_accessor :entities
 
       def define(entity_name, *entities)
-        entity_klass = Class.new(Attentive::CompositeEntity)
-        entity_klass.token_name = entity_name
-        entity_klass.entities = entities.map { |entity| Entity[entity] }
-        Entity.register! entity_name, entity_klass
+        create! entity_name do |entity_klass|
+          entity_klass.entities = entities.map { |entity| Entity[entity] }
+        end
       end
     end
 
