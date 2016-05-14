@@ -159,5 +159,4 @@ end
 require "attentive/entity"
 require "attentive/composite_entity"
 
-require "attentive/entities/integer"
-require "attentive/entities/relative_date"
+require "attentive/entities/core"

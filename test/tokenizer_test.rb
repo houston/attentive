@@ -55,7 +55,7 @@ class TokenizerTest < Minitest::Test
 
     context "when matching entities" do
       should "identify entities" do
-        assert_tokens "what is for lunch on {{relative-date}}?", [
+        assert_tokens "what is for lunch on {{core.date}}?", [
           word("what"),
           whitespace(" "),
           word("is"),
@@ -66,20 +66,20 @@ class TokenizerTest < Minitest::Test
           whitespace(" "),
           word("on"),
           whitespace(" "),
-          entity("relative-date"),
+          entity("core.date"),
           punctuation("?")
         ], entities: true
       end
 
       should "identify entities and their aliases" do
-        assert_tokens "remind me in {{hours:integer}} hours", [
+        assert_tokens "remind me in {{hours:core.number}} hours", [
           word("remind"),
           whitespace(" "),
           word("me"),
           whitespace(" "),
           word("in"),
           whitespace(" "),
-          entity("integer", "hours"),
+          entity("core.number", "hours"),
           whitespace(" "),
           word("hours")
         ], entities: true
@@ -88,7 +88,7 @@ class TokenizerTest < Minitest::Test
 
     context "when not matching entities" do
       should "not identify entities" do
-        assert_tokens "what is for lunch on {{relative-date}}?", [
+        assert_tokens "what is for lunch on {{core.date}}?", [
           word("what"),
           whitespace(" "),
           word("is"),
@@ -100,7 +100,9 @@ class TokenizerTest < Minitest::Test
           word("on"),
           whitespace(" "),
           punctuation("{{"),
-          word("relative-date"),
+          word("core"),
+          punctuation("."),
+          word("date"),
           punctuation("}}"),
           punctuation("?")
         ]

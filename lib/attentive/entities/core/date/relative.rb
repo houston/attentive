@@ -1,0 +1,31 @@
+require "attentive/entity"
+require "date"
+
+Attentive::Entity.define "core.date.relative",
+    "today",
+    "tomorrow",
+    "yesterday",
+    "{{core.date.wday}}",
+    "next {{core.date.wday}}",
+    "last {{core.date.wday}}" do |match|
+
+  today = Date.today
+
+  if match.matched?("core.date.wday")
+    wday = match["core.date.wday"]
+    days_until_wday = wday - today.wday
+    days_until_wday += 7 if days_until_wday < 0
+    date = today + days_until_wday
+
+    date += 7 if match.to_s.start_with?("next")
+    date -= 7 if match.to_s.start_with?("last")
+    date
+  else
+    case match.to_s
+    when "today" then today
+    when "tomorrow" then today + 1
+    when "yesterday" then today - 1
+    else raise NotImplementedError, "Unrecognized match: #{match.to_s}"
+    end
+  end
+end

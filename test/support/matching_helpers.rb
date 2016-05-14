@@ -30,6 +30,21 @@ module Attentive
         flunk "Expected #{@last_message.inspect} not to match any listener"
       end
 
+      def assert_entity_matches(message, entity:nil, as:nil)
+        raise ArgumentError.new("Missing required argument :entity") unless entity
+        listen_for "{{x:#{entity}}}"
+        hear message
+        assert_matched
+        assert_equal as, match[:x] if as
+      end
+
+      def refute_entity_matches(message, entity:nil)
+        raise ArgumentError.new("Missing required argument :entity") unless entity
+        listen_for "{{x:#{entity}}}"
+        hear message
+        refute_matched
+      end
+
       def matched?
         !match.nil?
       end
