@@ -15,11 +15,20 @@ module Attentive
       end
 
       def matches?(cursor)
-        regexp.match(cursor.to_s)
+        match_data = regexp.match(cursor.to_s)
+        return false unless match_data
+
+        # Advance the cursor to the first token after the regexp match
+        new_character_index = cursor.offset + match_data.to_s.length
+        cursor_pos = cursor.tokens.index { |token| token.pos >= new_character_index }
+        cursor_pos = cursor.tokens.length unless cursor_pos
+        cursor.instance_variable_set :@pos, cursor_pos
+
+        Hash[match_data.names.zip(match_data.captures)]
       end
 
       def to_s
-        regexp.inspect[1...-1]
+        regexp.inspect
       end
 
     end

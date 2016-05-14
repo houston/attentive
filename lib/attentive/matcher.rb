@@ -32,22 +32,10 @@ module Attentive
           @pos += 1 while phrase[pos] && phrase[pos].whitespace?
 
         elsif match_data = phrase[pos].matches?(cursor)
-          if match_data.is_a?(MatchData)
-            new_character_index = cursor.offset + match_data.to_s.length
-            @match_data.merge! Hash[match_data.names.zip(match_data.captures)]
-
-            # Advance the cursor to the first token after the regexp match
-            cursor_pos = cursor.tokens.index { |token| token.pos >= new_character_index }
-            cursor_pos = cursor.tokens.length unless cursor_pos
-            cursor.instance_variable_set :@pos, cursor_pos
-            @pos += 1
-          else
-            @match_data.merge!(match_data) unless match_data == true
-            @pos += 1
-          end
+          @match_data.merge!(match_data) unless match_data == true
+          @pos += 1
           @pos += 1 while phrase[pos] && phrase[pos].whitespace?
           @state = :found
-
 
           # -> This is the one spot where we instantiate a Match
           return Attentive::Match.new(phrase, @match_params.merge(match_data: @match_data)) if pos == phrase.length
