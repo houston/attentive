@@ -169,9 +169,9 @@ class TokenizerTest < Minitest::Test
       ]
     end
 
-    should "identity ambigous contractions as possibilities" do
+    should "identify ambigous contractions as possibilities" do
       assert_tokens "what's that?", [
-        any_of([
+        any_of("what's", [
           [ word("what"),
             whitespace(" "),
             word("is") ],
@@ -188,7 +188,7 @@ class TokenizerTest < Minitest::Test
       ]
     end
 
-    should "identity the special @me mention" do
+    should "identify the special @me mention" do
       assert_tokens "hello, @me", [
         word("hello"),
         punctuation(","),

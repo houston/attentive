@@ -72,7 +72,7 @@ module Attentive
             if possibilities.length == 1
               tokens.concat possibilities[0]
             else
-              tokens << any_of(possibilities, pos: i)
+              tokens << any_of(string, possibilities, pos: i)
             end
 
           else

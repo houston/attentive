@@ -58,6 +58,10 @@ module Attentive
       string
     end
 
+    def length
+      string.length
+    end
+
     def ==(other)
       self.class == other.class && self.string == other.string
     end

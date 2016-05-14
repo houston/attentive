@@ -1,8 +1,8 @@
 module Attentive
   module Tokens
 
-    def any_of(possibilities, pos: nil)
-      Attentive::Tokens::AnyOf.new possibilities, pos
+    def any_of(string, possibilities, pos: nil)
+      Attentive::Tokens::AnyOf.new string, possibilities, pos
     end
 
     def emoji(string, pos: nil)

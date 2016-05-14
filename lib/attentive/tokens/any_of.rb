@@ -2,12 +2,12 @@ require "attentive/token"
 
 module Attentive
   module Tokens
-    class AnyOf < Token
+    class AnyOf < StringToken
       attr_reader :possibilities
 
-      def initialize(possibilities, pos)
+      def initialize(string, possibilities, pos)
+        super string, pos
         @possibilities = possibilities
-        super pos
       end
 
       def ==(other)
