@@ -1,8 +1,8 @@
-require "attentive/entity"
-require "bigdecimal"
+require "attentive/entities/core/number/integer"
+require "attentive/entities/core/number/float"
+require "attentive/entities/core/number/positive"
+require "attentive/entities/core/number/negative"
 
-Attentive::Entity.define "core.number", %q{(?<number>(?<integer-part>\-?[\d,]+)(?:\.(?<decimal-part>\d+))?)} do |match|
-  integer = match["integer-part"].gsub(",", "")
-  decimal = match["decimal-part"]
-  decimal ? BigDecimal.new("#{integer}.#{decimal}") : integer.to_i
-end
+Attentive::CompositeEntity.define "core.number",
+  "core.number.float",
+  "core.number.integer"
