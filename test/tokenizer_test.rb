@@ -39,7 +39,9 @@ class TokenizerTest < Minitest::Test
         word("am"),
         whitespace(" "),
         word("here"),
-        punctuation("...")
+        punctuation("."),
+        punctuation("."),
+        punctuation("."),
       ]
     end
 
@@ -50,6 +52,31 @@ class TokenizerTest < Minitest::Test
         word("world"),
         whitespace(" "),
         emoji("rocket")
+      ]
+    end
+
+    should "identify . and , as number characters when they are adjacent to numbers" do
+      assert_tokens "4.55 6,450,798 .2", [
+        word("4.55"),
+        whitespace(" "),
+        word("6,450,798"),
+        whitespace(" "),
+        word(".2")
+      ]
+    end
+
+    should "identify . and , as punctuation when they are not adjacent to numbers" do
+      assert_tokens "4. 6, 450 .b", [
+        word("4"),
+        punctuation("."),
+        whitespace(" "),
+        word("6"),
+        punctuation(","),
+        whitespace(" "),
+        word("450"),
+        whitespace(" "),
+        punctuation("."),
+        word("b")
       ]
     end
 
@@ -99,11 +126,13 @@ class TokenizerTest < Minitest::Test
           whitespace(" "),
           word("on"),
           whitespace(" "),
-          punctuation("{{"),
+          punctuation("{"),
+          punctuation("{"),
           word("core"),
           punctuation("."),
           word("date"),
-          punctuation("}}"),
+          punctuation("}"),
+          punctuation("}"),
           punctuation("?")
         ]
       end
@@ -246,7 +275,7 @@ class TokenizerTest < Minitest::Test
 private
 
   def assert_tokens(message, expected_tokens, options={})
-    tokens = Attentive::Tokenizer.tokenize(message, options)
+    tokens = Attentive::Tokenizer.tokenize(message, options).to_a
     assert_equal expected_tokens, tokens
   end
 

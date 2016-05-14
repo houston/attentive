@@ -34,6 +34,10 @@ module Attentive
       self == cursor.peek
     end
 
+    def inspect
+      "<#{self.class.name ? self.class.name.split("::").last : "Entity"} #{to_s.inspect}>"
+    end
+
   end
 
 
