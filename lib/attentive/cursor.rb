@@ -25,6 +25,10 @@ module Attentive
       tokens[pos..-1].join
     end
 
+    def inspect
+      "|#{(tokens[0...pos] || []).join}\e[7m#{tokens[pos]}\e[0m#{(tokens[(pos + 1)..-1] || []).join}|"
+    end
+
     def offset
       peek.pos
     end
