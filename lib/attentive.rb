@@ -7,6 +7,14 @@ module Attentive
   # Default configuration
   self.invocations = ["@me".freeze]
 
+  # Default contexts that listeners will require
+  # a message to be heard in.
+  self.default_required_contexts = %i{conversation}
+
+  # Default contexts in which listeners will ignore messages.
+  self.default_prohibited_contexts = %i{quotation}
+
+
 
   # Attentive DSL
 

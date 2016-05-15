@@ -8,10 +8,10 @@ module Attentive
 
     def initialize(listeners, phrases, options, callback)
       context_options = options.fetch(:context, {})
-      @required_contexts = context_options.fetch(:in, %i{conversation})
+      @required_contexts = context_options.fetch(:in, Attentive.default_required_contexts)
       @required_contexts = [] if @required_contexts == :any
       @required_contexts = Set[*@required_contexts]
-      @prohibited_contexts = context_options.fetch(:not_in, %i{quotation})
+      @prohibited_contexts = context_options.fetch(:not_in, Attentive.default_prohibited_contexts)
       @prohibited_contexts = Set[*@prohibited_contexts]
 
       @listeners = listeners
