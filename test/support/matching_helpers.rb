@@ -5,6 +5,13 @@ module Attentive
 
       attr_reader :match
 
+      def hear!(message, params={})
+        (params[:contexts] ||= []).concat Array(self.class.default_context)
+
+        @last_message = Attentive::Message.new(message, params)
+        super @last_message
+      end
+
       def hear(message, params={})
         (params[:contexts] ||= []).concat Array(self.class.default_context)
 
