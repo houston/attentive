@@ -26,9 +26,20 @@ module Attentive
     listeners.listen_for(*args, &block)
   end
 
+  # Matches a message against all listeners
+  # and returns an array of matches
   def hear(message, params={})
     message = Attentive::Message.new(message, params) unless message.is_a?(Attentive::Message)
     listeners.hear message
+  end
+
+  # Matches a message against all listeners
+  # and invokes the first listener that mathes
+  def hear!(message, params={})
+    hear(message, params).each do |match|
+      match.listener.call(match)
+      return
+    end
   end
 
 end
