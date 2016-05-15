@@ -22,7 +22,7 @@ module Attentive
 
     def matches?(cursor)
       entities.each do |entity|
-        match = entity.matches?(cursor.dup)
+        match = entity.matches?(cursor)
         return match if match
       end
       false
