@@ -37,8 +37,8 @@ class CoreNumberTest < Minitest::Test
   end
 
   context "core.number.positive" do
-    should "match zero" do
-      assert_entity_matches "0", as: 0, entity: "core.number.positive"
+    should "not match zero" do
+      refute_entity_matches "0", entity: "core.number.positive"
     end
 
     should "match positive integers" do
@@ -98,8 +98,8 @@ class CoreNumberTest < Minitest::Test
   end
 
   context "core.number.integer.positive" do
-    should "match zero" do
-      assert_entity_matches "0", as: 0, entity: "core.number.integer.positive"
+    should "not match zero" do
+      refute_entity_matches "0", entity: "core.number.integer.positive"
     end
 
     should "match positive integers" do
@@ -144,8 +144,8 @@ class CoreNumberTest < Minitest::Test
   end
 
   context "core.number.float.positive" do
-    should "match zero" do
-      assert_entity_matches "0.0", as: BigDecimal.new("0.0"), entity: "core.number.float.positive"
+    should "not match zero" do
+      refute_entity_matches "0.0", entity: "core.number.float.positive"
     end
 
     should "match positive floats" do
