@@ -65,7 +65,11 @@ module Attentive
     end
 
     def to_s
-      "{{#{variable_name}:#{self.class.token_name}}}"
+      if variable_name.to_s == self.class.token_name.to_s
+        "{{#{self.class.token_name}}}"
+      else
+        "{{#{variable_name}:#{self.class.token_name}}}"
+      end
     end
 
     def entity?
