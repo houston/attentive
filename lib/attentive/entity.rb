@@ -23,7 +23,7 @@ module Attentive
           entity_klass.phrases = phrases.map do |phrase|
             Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true, ambiguous: false)
           end
-          entity_klass.send :define_method, :_value_from_match, &block
+          entity_klass.send :define_method, :_value_from_match, &block if block_given?
         end
       end
 
@@ -82,6 +82,10 @@ module Attentive
         end
       end
       false
+    end
+
+    def _value_from_match(match)
+      match.to_s
     end
 
   end

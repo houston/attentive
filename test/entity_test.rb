@@ -4,7 +4,55 @@ class EntityTest < Minitest::Test
   include Attentive::Tokens
 
 
-  context "A new Entity " do
+  context "A new Entity that's just an enumeration" do
+    setup do
+      Attentive::Entity.define "beers",
+        "bell's oberon",
+        "rogue dead guy ale",
+        "schalfly dry hopped ipa",
+        "4 hands contact high",
+        "scrimshaw pilsner"
+    end
+
+    teardown do
+      Attentive::Entity.undefine "beers"
+    end
+
+    should "be in the a global library of entities" do
+      assert Attentive::Entity["beers"]
+    end
+
+    should "be tokenizable" do
+      assert_kind_of Attentive::Token, entity("beers")
+    end
+
+    should "be a subclass of Attentive::Entity" do
+      assert_includes Attentive::Entity["beers"].ancestors, Attentive::Entity
+    end
+
+    should "match any of the phrases it defines" do
+      assert entity("beers").matches?(
+        Attentive::Cursor.new([
+          word("scrimshaw"),
+          whitespace(" "),
+          word("pilsner")
+        ]))
+    end
+
+    should "return a hash assigning the matched phrase to the variable defined by the listener" do
+      token = entity("beers", "selection")
+      match = token.matches?(
+        Attentive::Cursor.new([
+          word("scrimshaw"),
+          whitespace(" "),
+          word("pilsner")
+        ]))
+      assert_equal({"selection" => "scrimshaw pilsner"}, match)
+    end
+  end
+
+
+  context "A new Entity with a block" do
     setup do
       Attentive::Entity.define "runlength.b", "(?<b>b+)" do |match|
         match["b"].length
