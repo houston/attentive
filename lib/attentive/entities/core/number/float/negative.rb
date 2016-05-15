@@ -1,6 +1,6 @@
 require "attentive/entity"
-require "bigdecimal"
 
-Attentive::Entity.define "core.number.float.negative", %q{(?<float>\-[\d,]+\.\d+)} do |match|
-  BigDecimal.new(match["float"].gsub(",", ""))
+Attentive::Entity.define "core.number.float.negative", "{{float:core.number.float}}" do |match|
+  nomatch! if match["float"] >= 0
+  match["float"]
 end

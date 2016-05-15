@@ -1,6 +1,6 @@
-require "attentive/entities/core/number/integer/positive"
-require "attentive/entities/core/number/float/positive"
+require "attentive/entity"
 
-Attentive::CompositeEntity.define "core.number.positive",
-  "core.number.float.positive",
-  "core.number.integer.positive"
+Attentive::Entity.define "core.number.positive", "{{number:core.number}}" do |match|
+  nomatch! if match["number"] < 0
+  match["number"]
+end

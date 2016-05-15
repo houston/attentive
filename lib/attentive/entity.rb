@@ -78,11 +78,14 @@ module Attentive
 
     def matches?(cursor)
       self.class.phrases.each do |phrase|
-        cursor_copy = cursor.new_from_here
-        match = Attentive::Matcher.new(phrase, cursor_copy).match!
-        if match
-          cursor.advance cursor_copy.pos
-          return { variable_name => _value_from_match(match) }
+        catch NOMATCH do
+          cursor_copy = cursor.new_from_here
+          match = Attentive::Matcher.new(phrase, cursor_copy).match!
+          if match
+            value = _value_from_match(match) # <-- might throw
+            cursor.advance cursor_copy.pos
+            return { variable_name => value }
+          end
         end
       end
       false
@@ -91,6 +94,12 @@ module Attentive
     def _value_from_match(match)
       match.to_s
     end
+
+    def nomatch!
+      throw NOMATCH
+    end
+
+    NOMATCH = :nomatch.freeze
 
   end
 end
