@@ -12,7 +12,7 @@ module Attentive
     end
 
     def inspect
-      "\"#{to_s}\""
+      map(&:inspect).join("\n")
     end
 
   end
