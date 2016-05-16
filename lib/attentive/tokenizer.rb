@@ -24,6 +24,18 @@ module Attentive
       @options = options
     end
 
+    def match_entities?
+      options.fetch(:entities, false)
+    end
+
+    def match_regexps?
+      options.fetch(:regexps, false)
+    end
+
+    def fail_if_ambiguous?
+      !options.fetch(:ambiguous, true)
+    end
+
 
 
     def tokenize
@@ -87,6 +99,8 @@ module Attentive
     end
 
 
+
+  private
 
     def match_emoji_at(i)
       emoji = ""
@@ -162,18 +176,6 @@ module Attentive
     end
 
 
-
-    def match_entities?
-      options.fetch(:entities, false)
-    end
-
-    def match_regexps?
-      options.fetch(:regexps, false)
-    end
-
-    def fail_if_ambiguous?
-      !options.fetch(:ambiguous, true)
-    end
 
     WHITESPACE = /\s/.freeze
     PUNCTUATION = /[^\sa-z0-9'@]/.freeze
