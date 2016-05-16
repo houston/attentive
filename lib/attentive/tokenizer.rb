@@ -52,7 +52,7 @@ module Attentive
           tokens << word(string, pos: i)
           i += string.length
 
-        elsif PUNCTUATION === char # =~ /\W/
+        elsif PUNCTUATION === char
           tokens << punctuation(char, pos: i)
           i += 1
 
@@ -176,7 +176,7 @@ module Attentive
     end
 
     WHITESPACE = /\s/.freeze
-    PUNCTUATION = /[^\s\w'@-]/.freeze
+    PUNCTUATION = /[^\sa-z0-9'@]/.freeze
     EMOJI_START = ":".freeze
     EMOJI_END = ":".freeze
     ENTITY_START = "{".freeze
@@ -186,7 +186,7 @@ module Attentive
     CONDITIONAL_NUMBER_START = /[\.\-]/.freeze
     NUMBER = /\d/.freeze
     CONDITIONAL_NUMBER = /[\.,]/.freeze
-    WORD = /[\w'\-@]/.freeze
+    WORD = /[\w'@]/.freeze
 
     def fail_if_ambiguous!(phrase, tokens)
       ambiguous_token = tokens.find(&:ambiguous?)

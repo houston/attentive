@@ -12,17 +12,11 @@ class TokenizerTest < Minitest::Test
       ]
     end
 
-    should "identify apostrophes, dashes, and underscores as word characters" do
-      assert_tokens "jim's bot_user is a bot-user", [
+    should "identify apostrophes and underscores as word characters" do
+      assert_tokens "jim's bot_user", [
         word("jim's"),
         whitespace(" "),
-        word("bot_user"),
-        whitespace(" "),
-        word("is"),
-        whitespace(" "),
-        word("a"),
-        whitespace(" "),
-        word("bot-user")
+        word("bot_user")
       ]
     end
 
@@ -52,6 +46,19 @@ class TokenizerTest < Minitest::Test
         word("world"),
         whitespace(" "),
         emoji("rocket")
+      ]
+    end
+
+    should "treat a dash in front of a number as part of the number" do
+      assert_tokens "-20", [
+        word("-20")
+      ]
+    end
+
+    should "treat a dash in the middle of a number as breaking that number" do
+      assert_tokens "04-20", [
+        word("04"),
+        word("-20")
       ]
     end
 
