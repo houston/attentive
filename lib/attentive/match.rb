@@ -15,10 +15,20 @@ module Attentive
 
     def [](variable_name)
       @match_data.fetch variable_name.to_s
+    rescue KeyError
+      raise KeyError, "#{$!.message} in #{inspect}"
     end
 
     def to_s
       @phrase
+    end
+
+    def to_h
+      @match_data
+    end
+
+    def inspect
+      "#<#{self.class.name} #{@match_data.inspect} #{phrase.inspect}>"
     end
 
   end
