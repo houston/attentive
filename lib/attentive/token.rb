@@ -31,7 +31,12 @@ module Attentive
     end
 
     def matches?(cursor)
-      self == cursor.peek
+      if self == cursor.peek
+        cursor.pop
+        return true
+      end
+
+      false
     end
 
     def inspect

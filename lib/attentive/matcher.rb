@@ -34,6 +34,7 @@ module Attentive
             @state = :mismatch
             break
           end
+          message.pop
           cursor.pop while cursor.peek.whitespace?
 
         elsif match_data = cursor.peek.matches?(message)
@@ -45,12 +46,14 @@ module Attentive
           # -> This is the one spot where we instantiate a Match
           return Attentive::Match.new(phrase, @match_params.merge(match_data: @match_data)) if cursor.eof?
 
-        elsif !token.skippable?
+        elsif token.skippable?
+          message.pop
+
+        else
           @state = :mismatch
           break
         end
 
-        message.pop
         message.pop while message.peek.whitespace?
       end
 
