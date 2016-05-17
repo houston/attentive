@@ -67,7 +67,7 @@ module Attentive
 
 
 
-    def initialize(variable_name, pos=0)
+    def initialize(variable_name=self.class.token_name, pos=0)
       @variable_name = variable_name.to_s
       super pos
     end

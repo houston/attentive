@@ -16,6 +16,26 @@ module Attentive
 
 
 
+  # Recognizes entities in a phrase
+  def self.abstract(message)
+    message = Attentive::Message.new(message)
+    entities = Attentive::Entity.entities.map { |entity| Attentive::Phrase.new([entity.new]) }
+    i = 0
+    while i < message.tokens.length
+      entities.each do |entity|
+        match = Attentive::Matcher.new(entity, Cursor.new(message, i)).match!
+        next unless match
+
+        i = match.replace_with(entity)
+        break
+      end
+      i += 1
+    end
+    message.tokens.to_s
+  end
+
+
+
   # Attentive DSL
 
   def listeners
