@@ -28,7 +28,7 @@ module Attentive
       message.tokens.each_with_index do |token, i|
         listeners.each do |listener|
           listener.phrases.each do |phrase|
-            match = Attentive::Matcher.new(phrase, Cursor.new(message.tokens, i), listener: listener, message: message).match!
+            match = Attentive::Matcher.new(phrase, Cursor.new(message, i), listener: listener).match!
             next unless match
 
             # Don't match more than one phrase per listener

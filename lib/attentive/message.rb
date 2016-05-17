@@ -15,6 +15,18 @@ module Attentive
       @tokens ||= Attentive::Tokenizer.tokenize(text)
     end
 
+    def [](key)
+      tokens[key]
+    end
+
+    def []=(key, value)
+      tokens[key] = value
+    end
+
+    def length
+      tokens.length
+    end
+
     alias :to_s :text
 
     def inspect

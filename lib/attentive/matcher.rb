@@ -8,7 +8,7 @@ module Attentive
       @phrase = phrase
       @cursor = Cursor.new(phrase, params.fetch(:pos, 0))
       @message = message
-      @match_params = params.each_with_object({}) { |(key, value), new_hash| new_hash[key] = value if %i{listener message}.member?(key) }
+      @match_params = params.merge(message: message.message)
       @match_data = {}
       @state = :matching
 

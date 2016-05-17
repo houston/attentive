@@ -1,9 +1,10 @@
 module Attentive
   class Cursor
-    attr_reader :tokens, :pos
+    attr_reader :message, :tokens, :pos
 
-    def initialize(tokens, pos=0)
-      @tokens = tokens
+    def initialize(message, pos=0)
+      @message = message
+      @tokens = message.respond_to?(:tokens) ? message.tokens : message
       @pos = pos
     end
 
