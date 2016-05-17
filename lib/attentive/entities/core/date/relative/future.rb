@@ -5,7 +5,8 @@ Attentive::Entity.define "core.date.relative.future",
     "today",
     "tomorrow",
     "{{core.date.wday}}",
-    "next {{core.date.wday}}" do |match|
+    "next {{core.date.wday}}",
+    published: false do |match|
 
   today = Date.today
 

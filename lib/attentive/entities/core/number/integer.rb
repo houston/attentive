@@ -1,4 +1,4 @@
-Attentive::Entity.define "core.number.integer", %q{(?<integer>\-?[\d,]+)} do |match|
+Attentive::Entity.define "core.number.integer", %q{(?<integer>\-?[\d,]+)}, published: false do |match|
   match["integer"].gsub(",", "").to_i
 end
 

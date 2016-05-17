@@ -5,7 +5,8 @@ Attentive::Entity.define "core.date.relative.past",
     "today",
     "yesterday",
     "{{core.date.wday}}",
-    "last {{core.date.wday}}" do |match|
+    "last {{core.date.wday}}",
+    published: false do |match|
 
   today = Date.today
 

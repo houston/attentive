@@ -5,7 +5,8 @@ Attentive::Entity.define "core.date.explicit",
   "{{month:core.date.month}} {{day:core.number.integer.positive}} {{year:core.number.integer.positive}}",
   "{{day:core.number.integer.positive}} {{month:core.date.month}} {{year:core.number.integer.positive}}",
   %q{(?:(?<month>\d\d?)/(?<day>\d\d?)/(?<year>\d\d(?:\d\d)?))},
-  %q{(?:(?<year>\d\d(?:\d\d)?)-(?<month>\d\d?)-(?<day>\d\d?))} do |match|
+  %q{(?:(?<year>\d\d(?:\d\d)?)-(?<month>\d\d?)-(?<day>\d\d?))},
+  published: false do |match|
 
   month = match["month"].to_i
   day = match["day"].to_i

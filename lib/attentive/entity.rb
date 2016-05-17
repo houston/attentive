@@ -10,6 +10,15 @@ module Attentive
     class << self
       attr_accessor :phrases
       attr_accessor :token_name
+      attr_writer :published
+
+      def published?
+        @published
+      end
+
+      def entities
+        @entities.values.select(&:published?)
+      end
 
       def [](entity_name)
         entity_name = entity_name.to_sym
@@ -19,10 +28,13 @@ module Attentive
       end
 
       def define(entity_name, *phrases, &block)
+        options = phrases.last.is_a?(::Hash) ? phrases.pop : {}
+
         create! entity_name do |entity_klass|
           entity_klass.phrases = phrases.map do |phrase|
             Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true, ambiguous: false)
           end
+          entity_klass.published = options.fetch(:published, true)
           entity_klass.send :define_method, :_value_from_match, &block if block_given?
         end
       end

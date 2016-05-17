@@ -9,8 +9,11 @@ module Attentive
       attr_accessor :entities
 
       def define(entity_name, *entities)
+        options = entities.last.is_a?(::Hash) ? entities.pop : {}
+
         create! entity_name do |entity_klass|
           entity_klass.entities = entities.map { |entity| Entity[entity] }
+          entity_klass.published = options.fetch(:published, true)
         end
       end
     end

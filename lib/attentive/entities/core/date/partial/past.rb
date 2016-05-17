@@ -2,7 +2,8 @@ require "attentive/entity"
 require "date"
 
 Attentive::Entity.define "core.date.partial.past",
-    "{{month:core.date.month}} {{day:core.number.integer.positive}}" do |match|
+    "{{month:core.date.month}} {{day:core.number.integer.positive}}",
+    published: false do |match|
 
   month = match["month"]
   day = match["day"]
