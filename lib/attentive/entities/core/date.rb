@@ -5,6 +5,6 @@ require "attentive/entities/core/date/partial"
 require "attentive/entities/core/date/explicit"
 
 Attentive::CompositeEntity.define "core.date",
+  "core.date.explicit",
   "core.date.relative",
-  "core.date.partial",
-  "core.date.explicit"
+  "core.date.partial"
