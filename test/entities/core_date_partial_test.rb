@@ -1,9 +1,7 @@
 require "test_helper"
 
 class CoreDatePartialTest < Minitest::Test
-  include Attentive::Test::Matching
-
-  self.default_context = %i{conversation}
+  extend Attentive::Test::Entities
 
   def setup
     Timecop.freeze Date.new(2016, 4, 25)
@@ -14,47 +12,27 @@ class CoreDatePartialTest < Minitest::Test
   end
 
 
+  entity("core.date.partial.future").should do
+    match("June 6").as(Date.new(2016, 6, 6)) # still in the future for this year
+    match("Mar 1").as(Date.new(2017, 3, 1)) # has passed for this year
+    ignore("February 29") # has passed for this year, does not occur next year
 
-  context "core.date.partial.future" do
-    should "match 'June 6' as 'June 6, 2016'" do
-      assert_entity_matches "June 6", as: Date.new(2016, 6, 6), entity: "core.date.partial.future"
-    end
-
-    should "match 'Mar 1' as 'March 1, 2017'" do
-      assert_entity_matches "Mar 1", as: Date.new(2017, 3, 1), entity: "core.date.partial.future"
-    end
-
-    should "not match 'Feb 29' [2017]" do
-      refute_entity_matches "February 29", entity: "core.date.partial.future"
-    end
-
-    should "not match impossible dates" do
-      refute_entity_matches "April -5", entity: "core.date.partial.future"
-      refute_entity_matches "August 40", entity: "core.date.partial.future"
-      refute_entity_matches "Unknown 7", entity: "core.date.partial.future"
-    end
+    # should not match impossible dates
+    ignore("April -5")
+    ignore("August 40")
+    ignore("Unknown 7")
   end
 
-  context "core.date.partial.past" do
-    should "match 'June 6' as 'June 6, 2015'" do
-      assert_entity_matches "June 6", as: Date.new(2015, 6, 6), entity: "core.date.partial.past"
-    end
+  entity("core.date.partial.past").should do
+    match("June 6").as(Date.new(2015, 6, 6)) # hasn't occured yet this year
+    match("Mar 1").as(Date.new(2016, 3, 1)) # is in the past already this year
+    match("February 29").as(Date.new(2016, 2, 29)) # does occur this year
 
-    should "match 'Mar 1' as 'March 1, 2016'" do
-      assert_entity_matches "Mar 1", as: Date.new(2016, 3, 1), entity: "core.date.partial.past"
-    end
-
-    should "match 'Feb 29' [2016]" do
-      assert_entity_matches "February 29", as: Date.new(2016, 2, 29), entity: "core.date.partial.past"
-    end
-
-    should "not match impossible dates" do
-      refute_entity_matches "April -5", entity: "core.date.partial.past"
-      refute_entity_matches "August 40", entity: "core.date.partial.past"
-      refute_entity_matches "Unknown 7", entity: "core.date.partial.past"
-    end
+    # should not match impossible dates
+    ignore("April -5")
+    ignore("August 40")
+    ignore("Unknown 7")
   end
-
 
 
 end

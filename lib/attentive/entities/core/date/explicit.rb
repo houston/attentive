@@ -11,6 +11,9 @@ Attentive::Entity.define "core.date.explicit",
   day = match["day"].to_i
   year = match["year"].to_i
 
+  # Interpret 2-digit years in the 2000s
+  year += 2000 if year < 100
+
   nomatch! if day > 31 || month > 12
 
   begin

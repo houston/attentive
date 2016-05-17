@@ -1,49 +1,38 @@
 require "test_helper"
 
 class CoreDateMonthTest < Minitest::Test
-  include Attentive::Test::Matching
-
-  self.default_context = %i{conversation}
+  extend Attentive::Test::Entities
 
 
-  context "core.date.month" do
-    should "match month names" do
-      assert_entity_matches "January", as: 1, entity: "core.date.month"
-      assert_entity_matches "February", as: 2, entity: "core.date.month"
-      assert_entity_matches "March", as: 3, entity: "core.date.month"
-      assert_entity_matches "April", as: 4, entity: "core.date.month"
-      assert_entity_matches "May", as: 5, entity: "core.date.month"
-      assert_entity_matches "June", as: 6, entity: "core.date.month"
-      assert_entity_matches "July", as: 7, entity: "core.date.month"
-      assert_entity_matches "August", as: 8, entity: "core.date.month"
-      assert_entity_matches "September", as: 9, entity: "core.date.month"
-      assert_entity_matches "October", as: 10, entity: "core.date.month"
-      assert_entity_matches "November", as: 11, entity: "core.date.month"
-      assert_entity_matches "December", as: 12, entity: "core.date.month"
-    end
+  entity("core.date.month").should do
+    match("January").as(1)
+    match("February").as(2)
+    match("March").as(3)
+    match("April").as(4)
+    match("May").as(5)
+    match("June").as(6)
+    match("July").as(7)
+    match("August").as(8)
+    match("September").as(9)
+    match("October").as(10)
+    match("November").as(11)
+    match("December").as(12)
 
-    should "match month abbreviations" do
-      assert_entity_matches "jan", as: 1, entity: "core.date.month"
-      assert_entity_matches "feb", as: 2, entity: "core.date.month"
-      assert_entity_matches "mar", as: 3, entity: "core.date.month"
-      assert_entity_matches "apr", as: 4, entity: "core.date.month"
-      assert_entity_matches "jun", as: 6, entity: "core.date.month"
-      assert_entity_matches "jul", as: 7, entity: "core.date.month"
-      assert_entity_matches "aug", as: 8, entity: "core.date.month"
-      assert_entity_matches "sep", as: 9, entity: "core.date.month"
-      assert_entity_matches "sept", as: 9, entity: "core.date.month"
-      assert_entity_matches "oct", as: 10, entity: "core.date.month"
-      assert_entity_matches "nov", as: 11, entity: "core.date.month"
-      assert_entity_matches "dec", as: 12, entity: "core.date.month"
-    end
+    match("jan").as(1)
+    match("feb").as(2)
+    match("mar").as(3)
+    match("apr").as(4)
+    match("jun").as(6)
+    match("jul").as(7)
+    match("aug").as(8)
+    match("sep").as(9)
+    match("sept").as(9)
+    match("oct").as(10)
+    match("nov").as(11)
+    match("dec").as(12)
 
-    should "not match things that aren't month names" do
-      refute_entity_matches "spring", entity: "core.date.month"
-    end
-
-    should "not match month integers" do
-      refute_entity_matches "4", entity: "core.date.month"
-    end
+    ignore("spring")
+    ignore("4")
   end
 
 

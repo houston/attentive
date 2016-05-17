@@ -1,38 +1,33 @@
 require "test_helper"
 
 class CoreDateWdayTest < Minitest::Test
-  include Attentive::Test::Matching
-
-  self.default_context = %i{conversation}
+  extend Attentive::Test::Entities
 
 
-  context "core.date.wday" do
-    should "match weekday names" do
-      assert_entity_matches "Sunday", as: 0, entity: "core.date.wday"
-      assert_entity_matches "Monday", as: 1, entity: "core.date.wday"
-      assert_entity_matches "Tuesday", as: 2, entity: "core.date.wday"
-      assert_entity_matches "Wednesday", as: 3, entity: "core.date.wday"
-      assert_entity_matches "Thursday", as: 4, entity: "core.date.wday"
-      assert_entity_matches "Friday", as: 5, entity: "core.date.wday"
-      assert_entity_matches "Saturday", as: 6, entity: "core.date.wday"
-    end
+  entity("core.date.wday").should do
+    match("Sunday").as(0)
+    match("Monday").as(1)
+    match("Tuesday").as(2)
+    match("Wednesday").as(3)
+    match("Thursday").as(4)
+    match("Friday").as(5)
+    match("Saturday").as(6)
 
-    should "match weekday abbreviations" do
-      assert_entity_matches "sun", as: 0, entity: "core.date.wday"
-      assert_entity_matches "mon", as: 1, entity: "core.date.wday"
-      assert_entity_matches "tue", as: 2, entity: "core.date.wday"
-      assert_entity_matches "tues", as: 2, entity: "core.date.wday"
-      assert_entity_matches "wed", as: 3, entity: "core.date.wday"
-      assert_entity_matches "thu", as: 4, entity: "core.date.wday"
-      assert_entity_matches "thur", as: 4, entity: "core.date.wday"
-      assert_entity_matches "thurs", as: 4, entity: "core.date.wday"
-      assert_entity_matches "fri", as: 5, entity: "core.date.wday"
-      assert_entity_matches "sat", as: 6, entity: "core.date.wday"
-    end
+    match("sun").as(0)
+    match("mon").as(1)
+    match("tue").as(2)
+    match("tues").as(2)
+    match("wed").as(3)
+    match("thu").as(4)
+    match("thur").as(4)
+    match("thurs").as(4)
+    match("fri").as(5)
+    match("sat").as(6)
 
-    should "not match things that aren't weekday names" do
-      refute_entity_matches "tomorrow", entity: "core.date.wday"
-    end
+    match("saturday night").as(6)
+    match("mon night").as(1)
+
+    ignore("tomorrow")
   end
 
 
