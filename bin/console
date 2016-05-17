@@ -11,4 +11,5 @@ require "attentive"
 # Pry.start
 
 require "irb"
+include Attentive
 IRB.start

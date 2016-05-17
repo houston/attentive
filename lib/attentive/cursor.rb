@@ -27,7 +27,7 @@ module Attentive
     end
 
     def inspect
-      "|#{(tokens[0...pos] || []).join}\e[7m#{tokens[pos]}\e[0m#{(tokens[(pos + 1)..-1] || []).join}|"
+      "<Cursor \"#{(tokens[0...pos] || []).join.inspect[1...-1]}\e[7m#{tokens[pos].to_s.inspect[1...-1]}\e[0m#{(tokens[(pos + 1)..-1] || []).join.inspect[1...-1]}\">"
     end
 
     def offset
@@ -36,7 +36,9 @@ module Attentive
 
     def advance(n=1)
       @pos += n
+      self
     end
+    alias :adv :advance
 
     def eof?
       @pos == @tokens.length

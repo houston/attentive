@@ -34,6 +34,11 @@ module Attentive
     message.tokens.to_s
   end
 
+  # Shorthand for tokenizer
+  def self.tokenize(message)
+    Attentive::Tokenizer.tokenize(message)
+  end
+
 
 
   # Attentive DSL
