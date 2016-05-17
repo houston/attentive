@@ -1,12 +1,14 @@
 module Attentive
   class Match
-    attr_reader :listener, :phrase, :message
+    attr_reader :listener, :phrase, :message, :match_start, :match_end
 
     def initialize(phrase, attributes={})
       @phrase = phrase.to_s
       @match_data = attributes.fetch(:match_data, {})
+      @match_start = attributes.fetch(:match_start)
+      @match_end = attributes.fetch(:match_end)
+      @message = attributes.fetch(:message)
       @listener = attributes[:listener]
-      @message = attributes[:message]
     end
 
     def matched?(variable_name)
@@ -25,6 +27,11 @@ module Attentive
 
     def to_h
       @match_data
+    end
+
+    def replace_with(tokens)
+      message[match_start...match_end] = tokens
+      match_start + tokens.length
     end
 
     def inspect

@@ -6,9 +6,11 @@ module Attentive
 
     def initialize(phrase, message, params={})
       @phrase = phrase
+      @match_start = message.pos
       @cursor = Cursor.new(phrase, params.fetch(:pos, 0))
       @message = message
-      @match_params = params.merge(message: message.message)
+      self.message.pop while self.message.peek.whitespace?
+      @match_params = params.merge(message: message.message, match_start: message.pos)
       @match_data = {}
       @state = :matching
 
@@ -44,7 +46,9 @@ module Attentive
           @state = :found
 
           # -> This is the one spot where we instantiate a Match
-          return Attentive::Match.new(phrase, @match_params.merge(match_data: @match_data)) if cursor.eof?
+          return Attentive::Match.new(phrase, @match_params.merge(
+            match_end: message.pos,
+            match_data: @match_data)) if cursor.eof?
 
         elsif token.skippable?
           message.pop
