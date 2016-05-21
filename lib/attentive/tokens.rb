@@ -9,8 +9,9 @@ module Attentive
       Attentive::Tokens::Emoji.new string, pos
     end
 
-    def entity(entity_name, variable_name=entity_name, pos: nil)
-      Attentive::Entity[entity_name.to_sym].new(variable_name)
+    def entity(string, pos: nil)
+      entity_name, variable_name = *string.split(":").reverse
+      Attentive::Entity[entity_name.to_sym].new(variable_name || entity_name)
     end
 
     def invocation(string, pos: nil)

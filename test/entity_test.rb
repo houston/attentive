@@ -40,7 +40,7 @@ class EntityTest < Minitest::Test
     end
 
     should "return a hash assigning the matched phrase to the variable defined by the listener" do
-      token = entity("beers", "selection")
+      token = entity("selection:beers")
       match = token.matches?(
         Attentive::Cursor.new([
           word("scrimshaw"),
@@ -80,7 +80,7 @@ class EntityTest < Minitest::Test
     end
 
     should "return a hash assigning a value to the variable defined by the listener" do
-      token = entity("runlength.b", "n")
+      token = entity("n:runlength.b")
       match = token.matches?(Attentive::Cursor.new([word("bbbbb", pos: 0)]))
       assert_equal({"n" => 5}, match)
     end
@@ -122,7 +122,7 @@ class EntityTest < Minitest::Test
     end
 
     should "return a hash assigning a value to the variable defined by the listener" do
-      token = entity("runlength", "n")
+      token = entity("n:runlength")
       match = token.matches?(Attentive::Cursor.new([word("aaa", pos: 0)]))
       assert_equal({"n" => 3}, match)
     end

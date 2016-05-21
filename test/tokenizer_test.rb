@@ -111,7 +111,7 @@ class TokenizerTest < Minitest::Test
           whitespace(" "),
           word("in"),
           whitespace(" "),
-          entity("core.number", "hours"),
+          entity("hours:core.number"),
           whitespace(" "),
           word("hours")
         ], entities: true

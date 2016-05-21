@@ -54,7 +54,7 @@ module Attentive
           i += string.length
 
         elsif ENTITY_START === char && string = match_entity_at(i)
-          add_token entity(*string.split(":").reverse, pos: pos)
+          add_token entity(string, pos: pos)
           i += string.length + 4
 
         elsif NUMBER_START === char && string = match_number_at(i)
