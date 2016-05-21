@@ -49,24 +49,24 @@ module Attentive
         char = CHARACTER_SUBSTITIONS.fetch(char, char)
         pos = tokens.any? ? tokens.last.end : 0
 
-        if EMOJI_START === char && string = match_emoji_at(i)
-          add_token emoji(string, pos: pos)
-          i += string.length + 2
+        if WHITESPACE === char && string = match_whitespace_at(i)
+          add_token whitespace(string, pos: pos)
+          i += string.length
 
         elsif ENTITY_START === char && string = match_entity_at(i)
           add_token entity(*string.split(":").reverse, pos: pos)
           i += string.length + 4
 
-        elsif REGEXP_START === char && string = match_regexp_at(i)
-          add_token regexp(string, pos: pos)
-          i += string.length
-
-        elsif WHITESPACE === char && string = match_whitespace_at(i)
-          add_token whitespace(string, pos: pos)
-          i += string.length
-
         elsif NUMBER_START === char && string = match_number_at(i)
           add_token word(string, pos: pos)
+          i += string.length
+
+        elsif EMOJI_START === char && string = match_emoji_at(i)
+          add_token emoji(string, pos: pos)
+          i += string.length + 2
+
+        elsif REGEXP_START === char && string = match_regexp_at(i)
+          add_token regexp(string, pos: pos)
           i += string.length
 
         elsif PUNCTUATION === char
