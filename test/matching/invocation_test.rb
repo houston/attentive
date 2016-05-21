@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SelfMentionTest < Minitest::Test
+class InvocationTest < Minitest::Test
   include Attentive::Test::Matching
 
   self.default_context = %i{conversation}
