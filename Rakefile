@@ -9,14 +9,14 @@ end
 
 namespace :compile do
 
-  desc "Compile contractions.rb and abbreviations.rb"
+  desc "Compile substitutions.rb"
   task :data do
 
     data_path = File.expand_path(File.dirname(__FILE__) + "/data")
     output_path = File.expand_path(File.dirname(__FILE__) + "/lib/attentive")
 
-    contractions = {}
-    File.open(data_path + "/contractions.tsv") do |file|
+    substitutions = {}
+    File.open(data_path + "/substitutions.tsv") do |file|
       file.each do |line|
         next if line.start_with?("#") # skip comments
         next if line == "\n" # skip blank lines
@@ -27,37 +27,20 @@ namespace :compile do
         phrases = line.downcase.chomp.split("\t")
         raise "#{line.inspect} must have exactly two values" unless phrases.length >= 2
 
-        contractions[phrases.shift] = phrases
+        substitutions[phrases.shift] = phrases
       end
     end
-    File.open(output_path + "/contractions.rb", "w") do |file|
+    File.open(output_path + "/substitutions.rb", "w") do |file|
       file.write <<-RUBY
+require "attentive/trie"
+
 module Attentive
-  CONTRACTIONS = #{contractions.inspect}.freeze
-end
-      RUBY
-    end
-
-    abbreviations = {}
-    File.open(data_path + "/abbreviations.tsv") do |file|
-      file.each do |line|
-        next if line.start_with?("#") # skip comments
-        next if line == "\n" # skip blank lines
-
-        # the file contains tab-separated values.
-        # every line should have exactly two values:
-        #  + the first is the slang word
-        #  + the second is the normal word
-        words = line.downcase.chomp.split("\t")
-        raise "#{line.inspect} must have exactly two values" unless words.length == 2
-
-        abbreviations[words[0]] = words[1]
-      end
-    end
-    File.open(output_path + "/abbreviations.rb", "w") do |file|
-      file.write <<-RUBY
-module Attentive
-  ABBREVIATIONS = #{abbreviations.inspect}.freeze
+  SUBSTITUTIONS = #{substitutions.inspect}.each_with_object({}) do |(key, values), new_hash|
+    tokens = Attentive.tokenize(key, substitutions: false)
+    possibilities = values.map { |value| Attentive.tokenize(value, substitutions: false) }
+    value = possibilities.length == 1 ? possibilities[0] : Attentive::Phrase.new([Attentive::Tokens::AnyOf.new(key, possibilities, 0)])
+    new_hash[tokens] = value
+  end.freeze
 end
       RUBY
     end

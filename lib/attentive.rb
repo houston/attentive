@@ -1,6 +1,7 @@
 require "attentive/version"
 require "attentive/config"
 
+
 module Attentive
   extend Attentive::Config
 
@@ -35,8 +36,8 @@ module Attentive
   end
 
   # Shorthand for tokenizer
-  def self.tokenize(message)
-    Attentive::Tokenizer.tokenize(message)
+  def self.tokenize(message, options={})
+    Attentive::Tokenizer.tokenize(message, options)
   end
 
 

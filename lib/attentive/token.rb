@@ -1,9 +1,13 @@
 module Attentive
   class Token
-    attr_reader :pos
+    attr_accessor :begin
 
     def initialize(pos=nil)
-      @pos = pos
+      @begin = pos
+    end
+
+    def end
+      self.begin + to_s.length
     end
 
     def ==(other)
@@ -40,7 +44,7 @@ module Attentive
     end
 
     def inspect
-      "<#{self.class.name ? self.class.name.split("::").last : "Entity"} #{to_s.inspect}>"
+      "<#{self.class.name ? self.class.name.split("::").last : "Entity"} #{to_s.inspect}#{" #{self.begin}" if self.begin}>"
     end
 
   end
@@ -69,6 +73,14 @@ module Attentive
 
     def ==(other)
       self.class == other.class && self.string == other.string
+    end
+
+    def eql?(other)
+      self == other
+    end
+
+    def hash
+      [ self.class, string ].hash
     end
 
   end

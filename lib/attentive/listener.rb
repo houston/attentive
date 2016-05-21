@@ -1,4 +1,3 @@
-require "attentive/text"
 require "attentive/tokenizer"
 require "set"
 

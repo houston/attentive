@@ -1,6 +1,3 @@
-require "attentive/abbreviations"
-require "attentive/contractions"
-require "attentive/text"
 require "attentive/tokens"
 require "attentive/phrase"
 require "attentive/errors"
@@ -19,7 +16,7 @@ module Attentive
 
 
     def initialize(message, options={})
-      @message = Attentive::Text.normalize(message)
+      @message = message.downcase
       @chars = self.message.each_char.to_a
       @options = options
     end
@@ -32,6 +29,10 @@ module Attentive
       options.fetch(:regexps, false)
     end
 
+    def perform_substitutions?
+      options.fetch(:substitutions, true)
+    end
+
     def fail_if_ambiguous?
       !options.fetch(:ambiguous, true)
     end
@@ -40,67 +41,54 @@ module Attentive
 
     def tokenize
       i = 0
-      tokens = []
+      @tokens = []
+      @leaves = []
+
       while i < chars.length
         char = chars[i]
+        char = CHARACTER_SUBSTITIONS.fetch(char, char)
+        pos = tokens.any? ? tokens.last.end : 0
 
         if EMOJI_START === char && string = match_emoji_at(i)
-          tokens << emoji(string, pos: i)
+          add_token emoji(string, pos: pos)
           i += string.length + 2
 
         elsif ENTITY_START === char && string = match_entity_at(i)
-          tokens << entity(*string.split(":").reverse, pos: i)
+          add_token entity(*string.split(":").reverse, pos: pos)
           i += string.length + 4
 
         elsif REGEXP_START === char && string = match_regexp_at(i)
-          tokens << regexp(string, pos: i)
+          add_token regexp(string, pos: pos)
           i += string.length
 
         elsif WHITESPACE === char && string = match_whitespace_at(i)
-          tokens << whitespace(string, pos: i)
+          add_token whitespace(string, pos: pos)
           i += string.length
 
         elsif NUMBER_START === char && string = match_number_at(i)
-          tokens << word(string, pos: i)
+          add_token word(string, pos: pos)
           i += string.length
 
         elsif PUNCTUATION === char
-          tokens << punctuation(char, pos: i)
+          add_token punctuation(char, pos: pos)
           i += 1
 
-        else
-          string = match_word_at(i)
-          if Attentive.invocations.member?(string)
-            tokens << invocation(string, pos: i)
-
-          elsif replace_with = Attentive::ABBREVIATIONS[string]
-            tokens.concat self.class.tokenize(replace_with, options)
-
-          elsif expands_to = Attentive::CONTRACTIONS[string]
-            possibilities = expands_to.map do |possibility|
-              self.class.tokenize(possibility, options)
-            end
-
-            if possibilities.length == 1
-              tokens.concat possibilities[0]
-            else
-              tokens << any_of(string, possibilities, pos: i)
-            end
-
-          else
-            tokens << word(string, pos: i)
-          end
+        else string = match_word_at(i)
+          add_token word(string, pos: pos)
           i += string.length
+
         end
       end
 
       fail_if_ambiguous!(message, tokens) if fail_if_ambiguous?
+
       Attentive::Phrase.new(tokens)
     end
 
 
 
   private
+    attr_reader :tokens
 
     def match_emoji_at(i)
       emoji = ""
@@ -177,8 +165,32 @@ module Attentive
 
 
 
+    def add_token(token)
+      @tokens << token
+      return unless perform_substitutions?
+      @leaves = add_token_to_leaves token, @leaves
+    end
+
+    def add_token_to_leaves(token, leaves)
+      (leaves + [Attentive.substitutions]).each_with_object([]) do |leaf, new_leaves|
+        if new_leaf = leaf[token]
+          if new_leaf.fin?
+            i = -1 - leaf.depth
+            offset = tokens[i].begin
+            replacement = new_leaf.fin.dup.each { |token| token.begin += offset }
+            tokens[i..-1] = replacement
+            return add_token_to_leaves replacement.last, []
+          else
+            new_leaves.push new_leaf
+          end
+        end
+      end
+    end
+
+
+
     WHITESPACE = /\s/.freeze
-    PUNCTUATION = /[^\sa-z0-9'@]/.freeze
+    PUNCTUATION = /[^\sa-z0-9_]/.freeze
     EMOJI_START = ":".freeze
     EMOJI_END = ":".freeze
     ENTITY_START = "{".freeze
@@ -188,7 +200,12 @@ module Attentive
     CONDITIONAL_NUMBER_START = /[\.\-]/.freeze
     NUMBER = /\d/.freeze
     CONDITIONAL_NUMBER = /[\.,]/.freeze
-    WORD = /[\w'@]/.freeze
+    WORD = /[a-z0-9_]/.freeze
+    CHARACTER_SUBSTITIONS = {
+      "“" => "\"",
+      "”" => "\"",
+      "‘" => "'",
+      "’" => "'" }.freeze
 
     def fail_if_ambiguous!(phrase, tokens)
       ambiguous_token = tokens.find(&:ambiguous?)
@@ -206,5 +223,6 @@ end
 # Attentive::Tokenizer needs to be defined first...
 require "attentive/entity"
 require "attentive/composite_entity"
+require "attentive/substitutions"
 
 require "attentive/entities/core"

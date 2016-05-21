@@ -15,5 +15,9 @@ module Attentive
       map(&:inspect).join("\n")
     end
 
+    def dup
+      self.class.new map(&:dup)
+    end
+
   end
 end

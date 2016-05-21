@@ -31,7 +31,7 @@ module Attentive
     end
 
     def offset
-      peek.pos
+      peek.begin
     end
 
     def advance(n=1)
