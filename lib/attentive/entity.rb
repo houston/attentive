@@ -72,6 +72,10 @@ module Attentive
       super pos
     end
 
+    def name
+      self.class.token_name
+    end
+
     def ==(other)
       self.class == other.class && self.variable_name == other.variable_name
     end

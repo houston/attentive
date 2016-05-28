@@ -3,7 +3,7 @@ require "test_helper"
 class AbstracterTest < Minitest::Test
   EXAMPLES = {
     "what's for lunch tomorrow?" => "what's for lunch {{core.date}}?",
-    "what time on Wednesday?" => "what time on {{core.date.wday}}?",
+    "what time on Wednesday?" => "what time on {{core.date}}?",
     "where were you last Friday?" => "where were you {{core.date}}?",
     "April showers bring May flowers" => "{{core.date.month}} showers bring {{core.date.month}} flowers",
     "16 ounces" => "{{core.number}} ounces",

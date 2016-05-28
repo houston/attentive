@@ -23,13 +23,20 @@ module Attentive
     entities = Attentive::Entity.entities.map { |entity| Attentive::Phrase.new([entity.new]) }
     i = 0
     while i < message.tokens.length
-      entities.each do |entity|
+      abstractions = entities.each_with_object({}) do |entity, abstractions|
         match = Attentive::Matcher.new(entity, Cursor.new(message, i)).match!
-        next unless match
-
-        i = match.replace_with(entity)
-        break
+        abstractions[entity[0].name.to_s] = { entity: entity, match: match } if match
       end
+
+      # Pick the most abstract entity: if we match both
+      # {{core.date}} and {{core.date.past}}, use {{core.date}}
+      if abstractions.any?
+        keys = abstractions.keys
+        keys.reject! { |key| keys.any? { |other_key| key != other_key && key.start_with?(other_key) } }
+        abstraction = abstractions[keys.first]
+        i = abstraction[:match].replace_with(abstraction[:entity])
+      end
+
       i += 1
     end
     message.tokens.to_s
