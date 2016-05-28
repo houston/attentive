@@ -7,4 +7,5 @@ require "attentive/entities/core/date/explicit"
 Attentive::CompositeEntity.define "core.date.past",
   "core.date.explicit",
   "core.date.relative.past",
-  "core.date.partial.past"
+  "core.date.partial.past",
+  published: false

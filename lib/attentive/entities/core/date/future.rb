@@ -7,4 +7,5 @@ require "attentive/entities/core/date/explicit"
 Attentive::CompositeEntity.define "core.date.future",
   "core.date.explicit",
   "core.date.relative.future",
-  "core.date.partial.future"
+  "core.date.partial.future",
+  published: false
