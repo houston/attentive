@@ -4,10 +4,7 @@ require "attentive/entities/core/date/relative"
 require "attentive/entities/core/date/partial"
 require "attentive/entities/core/date/explicit"
 
-require "attentive/entities/core/date/future"
-require "attentive/entities/core/date/past"
-
-Attentive::CompositeEntity.define "core.date",
+Attentive::CompositeEntity.define "core.date.past",
   "core.date.explicit",
-  "core.date.relative",
-  "core.date.partial"
+  "core.date.relative.past",
+  "core.date.partial.past"
