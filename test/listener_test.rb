@@ -3,14 +3,6 @@ require "test_helper"
 class ListenerTest < Minitest::Test
   include Attentive::Test::Matching
 
-  context "When a listener is defined with an ambiguous contraction, it" do
-    should "raise an exception" do
-      assert_raises Attentive::AmbiguousPhraseError do
-        listen_for "it's complicated"
-      end
-    end
-  end
-
   context "When a listener is defined with an entity that doesn't exist, it" do
     should "raise an exception" do
       assert_raises Attentive::UndefinedEntityError do

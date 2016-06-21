@@ -33,10 +33,6 @@ module Attentive
       options.fetch(:substitutions, true)
     end
 
-    def fail_if_ambiguous?
-      !options.fetch(:ambiguous, true)
-    end
-
 
 
     def tokenize
@@ -79,8 +75,6 @@ module Attentive
 
         end
       end
-
-      fail_if_ambiguous!(message, tokens) if fail_if_ambiguous?
 
       Attentive::Phrase.new(tokens)
     end
@@ -206,15 +200,6 @@ module Attentive
       "”" => "\"",
       "‘" => "'",
       "’" => "'" }.freeze
-
-    def fail_if_ambiguous!(phrase, tokens)
-      ambiguous_token = tokens.find(&:ambiguous?)
-      return unless ambiguous_token
-
-      raise Attentive::AmbiguousPhraseError.new(
-        "The phrase #{phrase.inspect} is ambiguous. " <<
-        "Please use #{ambiguous_token.possibilities.map(&:inspect).join(" or ")}")
-    end
 
   end
 end

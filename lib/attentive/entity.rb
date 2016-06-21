@@ -32,7 +32,7 @@ module Attentive
 
         create! entity_name do |entity_klass|
           entity_klass.phrases = phrases.map do |phrase|
-            Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true, ambiguous: false)
+            Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true)
           end
           entity_klass.published = options.fetch(:published, true)
           entity_klass.send :define_method, :_value_from_match, &block if block_given?

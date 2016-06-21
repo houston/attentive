@@ -43,7 +43,7 @@ module Attentive
     end
 
     def tokenize_phrase!(phrase)
-      Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true, ambiguous: false)
+      Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true)
     end
 
   end

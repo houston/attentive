@@ -18,6 +18,18 @@ module Attentive
         true
       end
 
+      def matches?(cursor)
+        possibilities.each do |phrase|
+          cursor_copy = cursor.new_from_here
+          match = Attentive::Matcher.new(phrase, cursor_copy).match!
+          if match
+            cursor.advance cursor_copy.pos
+            return match.to_h
+          end
+        end
+        false
+      end
+
     end
   end
 end
