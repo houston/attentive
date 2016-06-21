@@ -25,7 +25,7 @@ namespace :compile do
         # the first value is the contraction.
         # the remaining values are possible phrases that match it
         phrases = line.downcase.chomp.split("\t")
-        raise "#{line.inspect} must have exactly two values" unless phrases.length >= 2
+        raise "#{line.inspect} must have at least two values" unless phrases.length >= 2
 
         substitutions[phrases.shift] = phrases
       end
