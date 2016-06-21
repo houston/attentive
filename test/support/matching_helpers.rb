@@ -5,6 +5,11 @@ module Attentive
 
       attr_reader :match
 
+      def listen_for(*args, &block)
+        listeners.clear
+        super
+      end
+
       def hear!(message, params={})
         (params[:contexts] ||= []).concat Array(self.class.default_context)
 
