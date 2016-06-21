@@ -37,4 +37,20 @@ class ContractionsTest < Minitest::Test
     end
   end
 
+
+
+  context "It" do
+    # https://en.wikipedia.org/wiki/Wikipedia:List_of_English_contractions
+    should "match all the contractions from Wikipedia's list of English contractions" do
+      File.read("test/fixtures/english_contractions.tsv").split($/).each do |line|
+        phrases = line.split("\t")
+        listen_for phrases.shift
+        phrases.each do |phrase|
+          hear phrase
+          assert_matched
+        end
+      end
+    end
+  end
+
 end

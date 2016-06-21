@@ -196,40 +196,8 @@ class TokenizerTest < Minitest::Test
       end
 
       should "expand contractions recursively" do
-        assert_tokens "i couldn't've done it", [
-          word("i"),
-          whitespace(" "),
+        assert_tokens "couldn't've", [
           word("could"),
-          whitespace(" "),
-          word("not"),
-          whitespace(" "),
-          word("have"),
-          whitespace(" "),
-          word("done"),
-          whitespace(" "),
-          word("it")
-        ]
-
-        assert_tokens "hadn't've", [
-          word("had"),
-          whitespace(" "),
-          word("not"),
-          whitespace(" "),
-          word("have")
-        ]
-
-        assert_tokens "mightn't've", [
-          word("might"),
-          whitespace(" "),
-          word("not"),
-          whitespace(" "),
-          word("have")
-        ]
-
-        assert_tokens "they'dn't've", [
-          word("they"),
-          whitespace(" "),
-          word("would"),
           whitespace(" "),
           word("not"),
           whitespace(" "),
