@@ -22,7 +22,7 @@ Attentive::Entity.define "core.date.relative.future",
     case match.to_s
     when "today" then today
     when "tomorrow" then today + 1
-    else raise NotImplementedError, "Unrecognized match: #{match.to_s}"
+    else nomatch!
     end
   end
 end
