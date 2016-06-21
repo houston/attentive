@@ -18,7 +18,7 @@ class TokenizerTest < Minitest::Test
       ]
     end
 
-    should "identify other puncutation marks" do
+    should "identify other punctuation marks" do
       assert_tokens "hello, world: Attentive's here!", [
         word("hello"),
         punctuation(","),
@@ -117,7 +117,7 @@ class TokenizerTest < Minitest::Test
         ], entities: true
       end
 
-      should "treat a : that's not part of an entity or emoji as puncutation" do
+      should "treat a : that's not part of an entity or emoji as punctuation" do
         assert_tokens "avengers: assemble", [
           word("avengers"),
           punctuation(":"),
