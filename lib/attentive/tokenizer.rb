@@ -132,7 +132,7 @@ module Attentive
     end
 
     def match_whitespace_at(i)
-      whitespace = chars[i]
+      whitespace = chars[i].dup
       while (i += 1) < chars.length
         break unless WHITESPACE === chars[i]
         whitespace << chars[i]
@@ -142,7 +142,7 @@ module Attentive
 
     def match_number_at(i)
       return false if CONDITIONAL_NUMBER_START === chars[i] && !(NUMBER === chars[i + 1])
-      number = chars[i]
+      number = chars[i].dup
       while (i += 1) < chars.length
         break unless NUMBER === chars[i] || (CONDITIONAL_NUMBER === chars[i] && NUMBER === chars[i + 1])
         number << chars[i]
@@ -151,7 +151,7 @@ module Attentive
     end
 
     def match_word_at(i)
-      word = chars[i]
+      word = chars[i].dup
       while (i += 1) < chars.length
         break unless WORD === chars[i]
         word << chars[i]
