@@ -50,8 +50,8 @@ module Attentive
         entity_symbol = entity_name.to_sym
         entity_klass = Class.new(self)
         entity_klass.token_name = entity_symbol
-        yield entity_klass
         Entity.register! entity_symbol, entity_klass
+        yield entity_klass
       end
 
       def register!(entity_name, entity_klass)
