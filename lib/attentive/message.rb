@@ -6,6 +6,7 @@ module Attentive
     attr_reader :contexts, :text
 
     def initialize(text, params={})
+      raise ArgumentError, "Message cannot be initialized without 'text'" unless text
       @text = text
       @contexts = Set.new(params.fetch(:contexts, []))
       contexts << :conversation if tokens.grep(Attentive::Tokens::Invocation).any?

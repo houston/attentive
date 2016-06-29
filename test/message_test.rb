@@ -8,6 +8,12 @@ class MessageTest < Minitest::Test
       message = Attentive::Message.new("hi")
       assert_equal Set[], message.contexts
     end
+
+    should "require its first argument be text" do
+      assert_raises ArgumentError do
+        Attentive::Message.new(nil)
+      end
+    end
   end
 
   context "When a message contains a mention of the bot, it" do
