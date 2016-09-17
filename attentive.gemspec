@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest-reporters-turn_reporter"
   spec.add_development_dependency "shoulda-context"
   spec.add_development_dependency "timecop"
+  spec.add_development_dependency "rr"
 end

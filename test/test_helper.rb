@@ -6,6 +6,7 @@ MiniTest::Reporters.use! Minitest::Reporters::TurnReporter.new
 
 require "shoulda/context"
 require "timecop"
+require "rr"
 require "support/matching_helpers"
 require "support/entities_helpers"
 require "minitest/autorun"

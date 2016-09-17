@@ -21,6 +21,8 @@ module Attentive
     end
 
     def hear(message)
+      message = Attentive::Message.new(message) unless message.is_a?(Attentive::Message)
+
       listeners = select { |listener| listener.matches_context?(message) }
 
       # Listen for any known phrase, starting with any token in the message.

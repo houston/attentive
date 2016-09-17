@@ -3,13 +3,14 @@ require "attentive/tokenizer"
 
 module Attentive
   class Message
-    attr_reader :contexts, :text
+    attr_reader :contexts, :text, :original_message
 
-    def initialize(text, params={})
-      raise ArgumentError, "Message cannot be initialized without 'text'" unless text
-      @text = text
+    def initialize(original_message, params={})
+      @original_message = original_message
+      @text = original_message.to_s
       @contexts = Set.new(params.fetch(:contexts, []))
-      contexts << :conversation if tokens.grep(Attentive::Tokens::Invocation).any?
+      @contexts << :conversation if tokens.grep(Attentive::Tokens::Invocation).any?
+      @contexts += Array(original_message.contexts) if original_message.respond_to?(:contexts)
     end
 
     def tokens

@@ -9,10 +9,12 @@ class MessageTest < Minitest::Test
       assert_equal Set[], message.contexts
     end
 
-    should "require its first argument be text" do
-      assert_raises ArgumentError do
-        Attentive::Message.new(nil)
-      end
+    should "keep a reference to its first argument" do
+      object = Object.new
+      stub(object).to_s { "text" }
+      message = Attentive::Message.new(object)
+      assert_equal "text", message.text
+      assert_equal object, message.original_message
     end
   end
 
