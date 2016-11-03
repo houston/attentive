@@ -4,6 +4,12 @@ module Attentive
   class Matcher
     attr_reader :phrase, :message, :cursor
 
+    def self.match!(phrase, message)
+      phrase = Attentive::Tokenizer.tokenize(phrase, entities: true) unless phrase.is_a?(Attentive::Phrase)
+      message = Attentive::Message.new(message) unless message.is_a?(Attentive::Message)
+      self.new(phrase, Attentive::Cursor.new(message)).match!
+    end
+
     def initialize(phrase, message, params={})
       @phrase = phrase
       @match_start = message.pos
