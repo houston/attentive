@@ -30,6 +30,16 @@ module Attentive
             refute_matched
           end
         end
+
+        def respond_to_missing?(*args)
+          return true if suite.respond_to?(*args)
+          super
+        end
+
+        def method_missing(method_name, *args, &block)
+          return suite.public_send(method_name, *args, &block) if suite.respond_to?(method_name)
+          super
+        end
       end
 
       EntityMatcher = Struct.new(:suite, :entity_name, :message) do
