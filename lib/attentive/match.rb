@@ -12,7 +12,7 @@ module Attentive
     end
 
     def matched?(variable_name)
-      @match_data.key? variable_name.to_s
+      !@match_data[variable_name.to_s].nil?
     end
 
     def [](variable_name)
