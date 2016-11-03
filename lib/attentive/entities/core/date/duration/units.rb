@@ -1,5 +1,4 @@
 require "attentive/entity"
-require "date"
 
 Attentive::Entity.define "core.date.duration.units",
     "day",
