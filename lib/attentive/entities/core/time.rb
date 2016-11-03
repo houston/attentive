@@ -11,7 +11,6 @@ Attentive::Entity.define "core.time",
 
   minutes = 0
 
-  p match
   if match.matched?("hours")
     hours = match["hours"].to_i
     hours += 12 if match.matched?("pm")

@@ -20,9 +20,9 @@ Attentive::Entity.define "core.time.duration",
 
   if match.matched?("hours")
     return Attentive::Duration.new(
-      hours: match["hours"],
-      minutes: match["minutes"],
-      seconds: match["seconds"])
+      hours: match["hours"].to_i,
+      minutes: match["minutes"].to_i,
+      seconds: match["seconds"].to_i)
   else
     a = match["a"]
     a += match["b"] if match.matched?("b")
