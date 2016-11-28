@@ -13,7 +13,8 @@ Attentive::Entity.define "core.time",
 
   if match.matched?("hours")
     hours = match["hours"].to_i
-    hours += 12 if match.matched?("pm")
+    hours += 12 if hours < 12 && match.matched?("pm")
+    hours = 0 if hours == 12 && !match.matched?("pm")
     minutes = match["minutes"].to_i if match.matched?("minutes")
   else
     case match.to_s
@@ -23,7 +24,7 @@ Attentive::Entity.define "core.time",
     end
   end
 
-  nomatch! if hours < 0 || hours > 24
+  nomatch! if hours < 0 || hours > 23
   nomatch! if minutes < 0 || minutes > 60
 
   today = Date.today; Time.new(today.year, today.month, today.day, hours, minutes)
