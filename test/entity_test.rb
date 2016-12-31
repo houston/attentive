@@ -9,7 +9,7 @@ class EntityTest < Minitest::Test
       Attentive::Entity.define "beers",
         "bell's oberon",
         "rogue dead guy ale",
-        "schalfly dry hopped ipa",
+        "schalfly dry hopped apa",
         "4 hands contact high",
         "scrimshaw pilsner"
     end
@@ -48,6 +48,54 @@ class EntityTest < Minitest::Test
           word("pilsner")
         ]))
       assert_equal({"selection" => "scrimshaw pilsner"}, match)
+    end
+  end
+
+
+  context "A new Entity that's a dictionary" do
+    setup do
+      Attentive::Entity.define "beers",
+        "bell's oberon" => { brewer: "Bell's", style: "Wheat Ale", abv: 5.8 },
+        "rogue dead guy ale" => { brewer: "Rogue Ales", style: "Helles Bock", abv: 6.5 },
+        "schalfly dry hopped apa" => { brewer: "Schlafly", style: "American Pale Ale", abv: 5.9 },
+        "4 hands contact high" => { brewer: "4 Hands", style: "Wheat Ale", abv: 5.0 },
+        "scrimshaw pilsner" => { brewer: "North Coast", style: "German Pilsner", abv: 4.4 }
+    end
+
+    teardown do
+      Attentive::Entity.undefine "beers"
+    end
+
+    should "be in the a global library of entities" do
+      assert Attentive::Entity["beers"]
+    end
+
+    should "be tokenizable" do
+      assert_kind_of Attentive::Token, entity("beers")
+    end
+
+    should "be a subclass of Attentive::Entity" do
+      assert_includes Attentive::Entity["beers"].ancestors, Attentive::Entity
+    end
+
+    should "match any of the phrases it defines" do
+      assert entity("beers").matches?(
+        Attentive::Cursor.new([
+          word("scrimshaw"),
+          whitespace(" "),
+          word("pilsner")
+        ]))
+    end
+
+    should "return a hash assigning the value for the matched phrase to the variable defined by the listener" do
+      token = entity("selection:beers")
+      match = token.matches?(
+        Attentive::Cursor.new([
+          word("scrimshaw"),
+          whitespace(" "),
+          word("pilsner")
+        ]))
+      assert_equal({"selection" => { brewer: "North Coast", style: "German Pilsner", abv: 4.4 }}, match)
     end
   end
 

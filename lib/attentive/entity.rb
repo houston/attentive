@@ -30,12 +30,27 @@ module Attentive
       def define(entity_name, *phrases, &block)
         options = phrases.last.is_a?(::Hash) ? phrases.pop : {}
 
+        phrase_value_map = {}
+        options.each do |phrase, value|
+          next if phrase.is_a?(Symbol) # symbols are options, strings are phrases
+          options.delete phrase
+          phrase_value_map[phrase] = value
+          phrases.push phrase
+        end
+
         create! entity_name do |entity_klass|
           entity_klass.phrases = phrases.map do |phrase|
             Attentive::Tokenizer.tokenize(phrase, entities: true, regexps: true)
           end
           entity_klass.published = options.fetch(:published, true)
-          entity_klass.send :define_method, :_value_from_match, &block if block_given?
+
+          if block_given?
+            entity_klass.send :define_method, :_value_from_match, &block
+          else
+            entity_klass.send :define_method, :_value_from_match do |match|
+              phrase_value_map.fetch(match.to_s, match.to_s)
+            end
+          end
         end
       end
 
