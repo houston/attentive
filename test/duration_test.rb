@@ -27,6 +27,22 @@ class DurationTest < Minitest::Test
   end
 
 
+  context "#to_s" do
+    should "work" do
+      assert_equal "1 year", duration(years: 1).to_s
+      assert_equal "1 month", duration(months: 1).to_s
+      assert_equal "1 day", duration(days: 1).to_s
+
+      assert_equal "2 years", duration(years: 2).to_s
+      assert_equal "2 months", duration(months: 2).to_s
+      assert_equal "2 days", duration(days: 2).to_s
+
+      assert_equal "1 year and 1 month", duration(years: 1, months: 1).to_s
+      assert_equal "1 year, 1 month, and 2 days", duration(years: 1, months: 1, days: 2).to_s
+    end
+  end
+
+
 private
 
   def date(*args)

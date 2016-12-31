@@ -22,14 +22,24 @@ module Attentive
     end
 
     def inspect
+      "<#{to_s}>"
+    end
+
+    def to_s
       phrases = []
-      phrases.push "#{years} years" if years > 0
-      phrases.push "#{months} months" if months > 0
-      phrases.push "#{days} days" if days > 0
-      phrases.push "#{hours} hours" if hours > 0
-      phrases.push "#{minutes} minutes" if minutes > 0
-      phrases.push "#{seconds} seconds" if seconds > 0
-      "<#{phrases.join(" ")}>"
+      phrases.push "#{years} #{years > 1 ? "years" : "year"}" if years > 0
+      phrases.push "#{months} #{months > 1 ? "months" : "month"}" if months > 0
+      phrases.push "#{days} #{days > 1 ? "days" : "day"}" if days > 0
+      phrases.push "#{hours} #{hours > 1 ? "hours" : "hour"}" if hours > 0
+      phrases.push "#{minutes} #{minutes > 1 ? "minutes" : "minute"}" if minutes > 0
+      phrases.push "#{seconds} #{seconds > 1 ? "seconds" : "second"}" if seconds > 0
+
+      case phrases.length
+      when 0 then ""
+      when 1 then phrases[0]
+      when 2 then phrases.join(" and ")
+      else "#{phrases[0...-1].join(", ")}, and #{phrases[-1]}"
+      end
     end
 
     def after(date)
