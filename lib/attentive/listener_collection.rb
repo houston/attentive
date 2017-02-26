@@ -1,15 +1,15 @@
 require "attentive"
-require "thread_safe"
-require "delegate"
 require "attentive/cursor"
 require "attentive/listener"
 require "attentive/matcher"
+require "concurrent/array"
+require "delegate"
 
 module Attentive
   class ListenerCollection < SimpleDelegator
 
     def initialize
-      super ThreadSafe::Array.new
+      super Concurrent::Array.new
     end
 
     def listen_for(*args, &block)
