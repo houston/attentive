@@ -3,8 +3,8 @@
 Attentive is a library for matching messages to natural-language listeners.
 
 
-
 <br/>
+
 ## Usage
 
 Its basic usage is like this:
@@ -25,8 +25,8 @@ In the snippet above,
   2. We received a message.
   3. Attentive matched the message to our listener and invoked the block.
 
-
 <br/>
+
 #### Optional Characters
 
 You'll notice that we listened for `"hi"` but _heard_ `"hi!"`. Attentive treats punctuation and emojis as optional; but we can make them required by putting them in the listener:
@@ -41,8 +41,8 @@ hear! "hi" # => nothing happened, the listener is expecting the exclamation mark
 
 > It's best to leave all but the most necessary punctuation out of listeners.
 
-
 <br/>
+
 #### Contractions and Abbreviations
 
 Attentive understands contractions and abbreviations and can match those:
@@ -63,8 +63,8 @@ hear! "what's for lunch?" # => "HAMBURGERS!"
 
 > Although you _can_ use contractions and abbreviations in listeners, it's a good habit not to. Attentive will not let you define listeners that use ambiguous contractions like `"where's"` (`"where's"` might be a contraction for `"where is"`, `"where does"`, or `"where has"`, or `"where was"`).
 
-
 <br/>
+
 #### Listeners
 
 Listeners are defined with three things:
@@ -87,8 +87,8 @@ end
 
 (In the example above, the phrases `{{date:core.date.relative.future}}` and `{{date:core.date}}` are [entities](#entities): which we'll cover in a minute.)
 
-
 <br/>
+
 #### Contexts
 
 A listener can require that messages be heard in a certain context in order to be matched or it can ignore messages if they are heard in certain contexts.
@@ -114,8 +114,8 @@ listen_for "ouch", context: { in: %i{conversation}, not_in: %i{quotation} }
 ```
 
 
-
 <br/>
+
 #### Entities
 
 Entities allow Attentive to match **_concepts_** rather than specific words.
@@ -141,8 +141,8 @@ end
 
 > It is a good idea to namespace entities (i.e. `deweys.menu.beers`). Attentive's convention is to treat namespaces as a taxonomy for concepts.
 
-
 <br/>
+
 #### Regular Expressions
 
 As useful as enumerations are, entities can also be defined with regular expressions and with a block that converts the matched part of the message to a more useful value:
@@ -170,8 +170,8 @@ Attentive::Entity.define "core.date.relative.future",
 ```
 
 
-
 <br/>
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -189,8 +189,8 @@ Or install it yourself as:
     $ gem install attentive
 
 
-
 <br/>
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -198,15 +198,15 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 
-
 <br/>
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/houston/attentive.
 
 
-
 <br/>
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
