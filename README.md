@@ -160,14 +160,14 @@ end
 > Whenever possible, though, prefer composing entities to using regular expressions.
 > For example:
 > ```ruby
-Attentive::Entity.define "core.date.relative.future",
-  "next {{core.date.wday}}"
-```
+> Attentive::Entity.define "core.date.relative.future",
+>   "next {{core.date.wday}}"
+> ```
 > is better than:
 > ```ruby
-Attentive::Entity.define "core.date.relative.future",
-  "next (?<weekday>(:sun|mon|tues|wednes|thurs|fri|satur)day)"
-```
+> Attentive::Entity.define "core.date.relative.future",
+>   "next (?<weekday>(:sun|mon|tues|wednes|thurs|fri|satur)day)"
+> ```
 
 
 <br/>
